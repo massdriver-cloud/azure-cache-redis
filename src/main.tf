@@ -31,5 +31,7 @@ resource "azurerm_redis_cache" "main" {
   sku_name             = local.sku.sku_name
   subnet_id            = var.vnet.data.infrastructure.default_subnet_id
 
+  shard_count = var.enable_cluster ? var.shard_count : 0
+
   tags = var.md_metadata.default_tags
 }

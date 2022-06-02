@@ -1,8 +1,8 @@
 schema: draft-07
 name: azure-cache-redis
-description: "Azure Redis Cache is low-latency, scalable, secure, and highly available in-memory Redis data store available for Azure."
-ref: github.com/massdriver-cloud/massdriver-bundles/bundles/azure-cache-redis
-access: "public"
+description: 'Azure Redis Cache is low-latency, scalable, secure, and highly available in-memory Redis data store available for Azure.'
+ref: github.com/massdriver-cloud/massdriver-bundles
+access: private
 type: bundle
 
 steps:
@@ -11,23 +11,16 @@ steps:
 
 params:
   examples:
-    - __name: "Small and Highly Available"
-      redis_version: 6
+    - __name: 'Small and Highly Available'
       capacity: 6 GB
       replicas_per_primary: 1
-      high_availability: true
-    - __name: "Medium and Highly Available"
-      redis_version: 6
+    - __name: 'Medium and Highly Available'
       capacity: 26 GB
       replicas_per_primary: 2
-      high_availability: true
-    - __name: "Large and Highly Available"
-      redis_version: 6
+    - __name: 'Large and Highly Available'
       capacity: 120 GB
       replicas_per_primary: 3
-      high_availability: true
   required:
-    - redis_version
     - capacity
     - replicas_per_primary
   properties:
@@ -57,10 +50,27 @@ params:
         - 1
         - 2
         - 3
-    high_availability:
+    enable_cluster:
       type: boolean
-      title: Enable a replicated two-node primary/secondary configuration. If the primary node in a cache is unavailable, the replica promotes itself to become the new primary automatically. This process is called a failover.
+      title: Redis clustering
+      description: Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. Once enabled, clustering cannot be disabled again.
       default: false
+    shard_count:
+      type: integer
+      title: Redis cluster shard count
+      description: Set the number of shards in the Redis cluster. You must set "Enable Redis clustering" to true to use this feature.
+      default: 1
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+        - 10
 
 connections:
   required:
@@ -84,4 +94,6 @@ ui:
     - redis_version
     - capacity
     - replicas_per_primary
-    - "*"
+    - enable_cluster
+    - shard_count
+    - '*'
