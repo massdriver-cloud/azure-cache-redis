@@ -1,0 +1,75 @@
+{
+  "version": 4,
+  "terraform_version": "1.1.8",
+  "serial": 17,
+  "lineage": "921384f4-95fc-0a06-8ca8-69154cf20155",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "azurerm_redis_cache",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/azurerm\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "capacity": 1,
+            "enable_non_ssl_port": false,
+            "family": "P",
+            "hostname": "local-dev-replaceme-0000.redis.cache.windows.net",
+            "id": "/subscriptions/4718857a-5dbe-452c-a172-21a3ae74304f/resourceGroups/local-dev/providers/Microsoft.Cache/Redis/local-dev-replaceme-0000",
+            "location": "eastus",
+            "minimum_tls_version": "1.2",
+            "name": "local-dev-replaceme-0000",
+            "patch_schedule": [],
+            "port": 6379,
+            "primary_access_key": "6PSdQEjDLzg6DkFZJ4P8ggWtGL9oetNlnAzCaBFJ2Tc=",
+            "primary_connection_string": "local-dev-replaceme-0000.redis.cache.windows.net:6380,password=6PSdQEjDLzg6DkFZJ4P8ggWtGL9oetNlnAzCaBFJ2Tc=,ssl=true,abortConnect=False",
+            "private_static_ip_address": "10.0.0.93",
+            "public_network_access_enabled": true,
+            "redis_configuration": [
+              {
+                "aof_backup_enabled": false,
+                "aof_storage_connection_string_0": "",
+                "aof_storage_connection_string_1": "",
+                "enable_authentication": true,
+                "maxclients": 7500,
+                "maxfragmentationmemory_reserved": 642,
+                "maxmemory_delta": 642,
+                "maxmemory_policy": "",
+                "maxmemory_reserved": 642,
+                "notify_keyspace_events": "",
+                "rdb_backup_enabled": false,
+                "rdb_backup_frequency": 0,
+                "rdb_backup_max_snapshot_count": 0,
+                "rdb_storage_connection_string": ""
+              }
+            ],
+            "redis_version": "6.0.14",
+            "replicas_per_master": 1,
+            "replicas_per_primary": 1,
+            "resource_group_name": "local-dev",
+            "secondary_access_key": "MdHqfRfMlrNGxyibauSy8pBzxkZ1t3xclAzCaAh351k=",
+            "secondary_connection_string": "local-dev-replaceme-0000.redis.cache.windows.net:6380,password=MdHqfRfMlrNGxyibauSy8pBzxkZ1t3xclAzCaAh351k=,ssl=true,abortConnect=False",
+            "shard_count": 0,
+            "sku_name": "Premium",
+            "ssl_port": 6380,
+            "subnet_id": "/subscriptions/4718857a-5dbe-452c-a172-21a3ae74304f/resourceGroups/local-dev/providers/Microsoft.Network/virtualNetworks/local-dev-vnet-0000/subnets/default",
+            "tags": {
+              "md-manifest": "replaceme",
+              "md-package": "local-dev-replaceme-0000",
+              "md-project": "local",
+              "md-target": "dev"
+            },
+            "tenant_settings": null,
+            "timeouts": null,
+            "zones": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo1NDAwMDAwMDAwMDAwLCJkZWxldGUiOjU0MDAwMDAwMDAwMDAsInJlYWQiOjMwMDAwMDAwMDAwMCwidXBkYXRlIjo1NDAwMDAwMDAwMDAwfX0="
+        }
+      ]
+    }
+  ]
+}

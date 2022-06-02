@@ -1,0 +1,60 @@
+# Operator Guide for "{type}"
+
+## TODO:
+
+* [ ] Write a design doc / operator guide
+* [x] Write bundle code
+  * [x] Defing params & connections JSON schema
+  * [x] Write 2-3 Guided Configs
+  * [x] Define artifact schema, design new artifact definitions if necessary
+  * [x] Test each guided config
+  * [x] View params schema in storybook, [write UI schema](https://react-jsonschema-form.readthedocs.io/en/latest/usage/widgets/) for sorting fields, etc
+* [ ] Write user guide
+* [ ] Remove this TODO block
+
+This bunde builds the Azure Redis Cache resource, creates a static private IP address, and associates it to the connected virtual network by use of the default subnet ID.
+
+## Use Cases
+
+Bundle for provisioning the Azure Redis Cache resource in Azure.
+
+### Guided Configs
+Small and Highly Available
+- Sets Redis version to 6
+- capacity: 6GB
+- replicas_per_primary: 1
+- high_availability: true
+
+"Medium and Highly Available"
+- redis_version: 6
+- capacity: 26GB
+- replicas_per_primary: 2
+- high_availability: true
+
+"Large and Highly Available"
+- redis_version: 6
+- capacity: 120GB
+- replicas_per_primary: 3
+- high_availability: true
+
+## Design
+
+### How It Works
+
+This bundle creates the Azure Redis Cache resource, creates a private dynamic IP address, and associates it to the subnet ID of the virtual network it's connected to.
+
+#### Best Practices
+
+#### Security 
+
+#### Auditing
+
+#### Compliance
+
+#### Observability
+
+### Trade-offs
+
+### Permissions
+
+Contributor

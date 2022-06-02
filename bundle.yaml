@@ -1,0 +1,87 @@
+schema: draft-07
+name: azure-cache-redis
+description: "Azure Redis Cache is low-latency, scalable, secure, and highly available in-memory Redis data store available for Azure."
+ref: github.com/massdriver-cloud/massdriver-bundles/bundles/azure-cache-redis
+access: "public"
+type: bundle
+
+steps:
+  - path: src
+    provisioner: terraform
+
+params:
+  examples:
+    - __name: "Small and Highly Available"
+      redis_version: 6
+      capacity: 6 GB
+      replicas_per_primary: 1
+      high_availability: true
+    - __name: "Medium and Highly Available"
+      redis_version: 6
+      capacity: 26 GB
+      replicas_per_primary: 2
+      high_availability: true
+    - __name: "Large and Highly Available"
+      redis_version: 6
+      capacity: 120 GB
+      replicas_per_primary: 3
+      high_availability: true
+  required:
+    - redis_version
+    - capacity
+    - replicas_per_primary
+  properties:
+    redis_version:
+      type: integer
+      title: Redis version
+      description: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. It will update these versions regularly as newer Redis software is released.
+      default: 6
+      enum:
+        - 4
+        - 6
+    capacity:
+      type: string
+      title: Cache size
+      description: The size of the Redis memory cache in GB.
+      enum:
+        - 6 GB
+        - 13 GB
+        - 26 GB
+        - 53 GB
+        - 120 GB
+    replicas_per_primary:
+      type: integer
+      title: Replicas
+      description: Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically.
+      enum:
+        - 1
+        - 2
+        - 3
+    high_availability:
+      type: boolean
+      title: Enable a replicated two-node primary/secondary configuration. If the primary node in a cache is unavailable, the replica promotes itself to become the new primary automatically. This process is called a failover.
+      default: false
+
+connections:
+  required:
+    - azure_service_principal
+    - vnet
+  properties:
+    azure_service_principal:
+      $ref: massdriver/azure-service-principal
+    vnet:
+      $ref: massdriver/azure-virtual-network
+
+artifacts:
+  required:
+    - authentication
+  properties:
+    authentication:
+      $ref: massdriver/redis-authentication
+
+ui:
+  ui:order:
+    - redis_version
+    - capacity
+    - replicas_per_primary
+    - "*"
