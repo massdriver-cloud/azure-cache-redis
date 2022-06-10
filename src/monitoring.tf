@@ -14,9 +14,9 @@ locals {
 }
 
 module "cpu_metric_alert" {
-  source              = "../../../provisioners/terraform/modules/azure-monitor-metrics-alarm"
+  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=54da4ef"
   scopes              = azurerm_redis_cache.main.id
-  resource_group_name = var.vnet.data.infrastructure.resource_group
+  resource_group_name = azurerm_resource_group.main.name
   severity            = local.scope_config.severity
   frequency           = local.scope_config.frequency
   window_size         = local.scope_config.window_size
@@ -44,9 +44,9 @@ module "cpu_metric_alert" {
 }
 
 module "memory_metric_alert" {
-  source              = "../../../provisioners/terraform/modules/azure-monitor-metrics-alarm"
+  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=54da4ef"
   scopes              = azurerm_redis_cache.main.id
-  resource_group_name = var.vnet.data.infrastructure.resource_group
+  resource_group_name = azurerm_resource_group.main.name
   severity            = local.scope_config.severity
   frequency           = local.scope_config.frequency
   window_size         = local.scope_config.window_size
@@ -74,9 +74,9 @@ module "memory_metric_alert" {
 }
 
 module "server_load_metric_alert" {
-  source              = "../../../provisioners/terraform/modules/azure-monitor-metrics-alarm"
+  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=54da4ef"
   scopes              = azurerm_redis_cache.main.id
-  resource_group_name = var.vnet.data.infrastructure.resource_group
+  resource_group_name = azurerm_resource_group.main.name
   severity            = local.scope_config.severity
   frequency           = local.scope_config.frequency
   window_size         = local.scope_config.window_size
