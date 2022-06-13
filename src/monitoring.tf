@@ -14,8 +14,8 @@ locals {
 }
 
 module "cpu_metric_alert" {
-  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=54da4ef"
-  scopes              = azurerm_redis_cache.main.id
+  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=c46bc59"
+  scopes              = [azurerm_redis_cache.main.id]
   resource_group_name = azurerm_resource_group.main.name
   severity            = local.scope_config.severity
   frequency           = local.scope_config.frequency
@@ -26,7 +26,6 @@ module "cpu_metric_alert" {
   ]
 
   md_metadata     = var.md_metadata
-  action_group_id = var.vnet.data.observability.alarm_monitor_action_group_ari
   message         = "High CPU Usage"
 
   alarm_name       = "${var.md_metadata.name_prefix}-highProcessorTime"
@@ -44,8 +43,8 @@ module "cpu_metric_alert" {
 }
 
 module "memory_metric_alert" {
-  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=54da4ef"
-  scopes              = azurerm_redis_cache.main.id
+  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=c46bc59"
+  scopes              = [azurerm_redis_cache.main.id]
   resource_group_name = azurerm_resource_group.main.name
   severity            = local.scope_config.severity
   frequency           = local.scope_config.frequency
@@ -56,7 +55,6 @@ module "memory_metric_alert" {
   ]
 
   md_metadata     = var.md_metadata
-  action_group_id = var.vnet.data.observability.alarm_monitor_action_group_ari
   message         = "High Memory Usage"
 
   alarm_name       = "${var.md_metadata.name_prefix}-highMemoryUsage"
@@ -74,8 +72,8 @@ module "memory_metric_alert" {
 }
 
 module "server_load_metric_alert" {
-  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=54da4ef"
-  scopes              = azurerm_redis_cache.main.id
+  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=c46bc59"
+  scopes              = [azurerm_redis_cache.main.id]
   resource_group_name = azurerm_resource_group.main.name
   severity            = local.scope_config.severity
   frequency           = local.scope_config.frequency
@@ -86,7 +84,6 @@ module "server_load_metric_alert" {
   ]
 
   md_metadata     = var.md_metadata
-  action_group_id = var.vnet.data.observability.alarm_monitor_action_group_ari
   message         = "High Server Load Usage"
 
   alarm_name       = "${var.md_metadata.name_prefix}-highServerLoadUsage"
