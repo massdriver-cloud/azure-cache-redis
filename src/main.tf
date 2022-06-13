@@ -31,6 +31,9 @@ resource "azurerm_redis_cache" "main" {
   sku_name             = local.sku.sku_name
   subnet_id            = var.vnet.data.infrastructure.default_subnet_id
 
+  # for some reason this defaults to true. Setting to false to prevent internet access
+  public_network_access_enabled = false
+
   shard_count = var.enable_cluster ? var.shard_count : 0
 
   tags = var.md_metadata.default_tags
