@@ -25,13 +25,13 @@ params:
     - replicas_per_primary
   properties:
     redis_version:
-      type: integer
+      type: string
       title: Redis version
       description: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. It will update these versions regularly as newer Redis software is released.
-      default: 6
+      default: "6"
       enum:
-        - 4
-        - 6
+        - "4"
+        - "6"
     capacity:
       type: string
       title: Cache size
