@@ -13,20 +13,27 @@ locals {
   }
 }
 
-module "cpu_metric_alert" {
-  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=c46bc59"
-  scopes              = [azurerm_redis_cache.main.id]
+module "alarm_channel" {
+  source              = "github.com/massdriver-cloud/terraform-modules//azure-alarm-channel?ref=aa08797"
+  md_metadata         = var.md_metadata
   resource_group_name = azurerm_resource_group.main.name
-  severity            = local.scope_config.severity
-  frequency           = local.scope_config.frequency
-  window_size         = local.scope_config.window_size
+}
+
+module "cpu_metric_alert" {
+  source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=aa08797"
+  scopes                  = [azurerm_redis_cache.main.id]
+  resource_group_name     = azurerm_resource_group.main.name
+  monitor_action_group_id = module.alarm_channel.id
+  severity                = local.scope_config.severity
+  frequency               = local.scope_config.frequency
+  window_size             = local.scope_config.window_size
 
   depends_on = [
     azurerm_redis_cache.main
   ]
 
-  md_metadata     = var.md_metadata
-  message         = "High CPU Usage"
+  md_metadata = var.md_metadata
+  message     = "High CPU Usage"
 
   alarm_name       = "${var.md_metadata.name_prefix}-highProcessorTime"
   operator         = local.metric_config.operator
@@ -43,19 +50,20 @@ module "cpu_metric_alert" {
 }
 
 module "memory_metric_alert" {
-  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=c46bc59"
-  scopes              = [azurerm_redis_cache.main.id]
-  resource_group_name = azurerm_resource_group.main.name
-  severity            = local.scope_config.severity
-  frequency           = local.scope_config.frequency
-  window_size         = local.scope_config.window_size
+  source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=aa08797"
+  scopes                  = [azurerm_redis_cache.main.id]
+  resource_group_name     = azurerm_resource_group.main.name
+  monitor_action_group_id = module.alarm_channel.id
+  severity                = local.scope_config.severity
+  frequency               = local.scope_config.frequency
+  window_size             = local.scope_config.window_size
 
   depends_on = [
     azurerm_redis_cache.main
   ]
 
-  md_metadata     = var.md_metadata
-  message         = "High Memory Usage"
+  md_metadata = var.md_metadata
+  message     = "High Memory Usage"
 
   alarm_name       = "${var.md_metadata.name_prefix}-highMemoryUsage"
   operator         = local.metric_config.operator
@@ -72,19 +80,20 @@ module "memory_metric_alert" {
 }
 
 module "server_load_metric_alert" {
-  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=c46bc59"
-  scopes              = [azurerm_redis_cache.main.id]
-  resource_group_name = azurerm_resource_group.main.name
-  severity            = local.scope_config.severity
-  frequency           = local.scope_config.frequency
-  window_size         = local.scope_config.window_size
+  source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=aa08797"
+  scopes                  = [azurerm_redis_cache.main.id]
+  resource_group_name     = azurerm_resource_group.main.name
+  monitor_action_group_id = module.alarm_channel.id
+  severity                = local.scope_config.severity
+  frequency               = local.scope_config.frequency
+  window_size             = local.scope_config.window_size
 
   depends_on = [
     azurerm_redis_cache.main
   ]
 
-  md_metadata     = var.md_metadata
-  message         = "High Server Load Usage"
+  md_metadata = var.md_metadata
+  message     = "High Server Load Usage"
 
   alarm_name       = "${var.md_metadata.name_prefix}-highServerLoadUsage"
   operator         = local.metric_config.operator
