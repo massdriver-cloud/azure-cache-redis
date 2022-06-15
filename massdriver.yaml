@@ -12,13 +12,13 @@ steps:
 params:
   examples:
     - __name: 'Small and Highly Available'
-      capacity: 6 GB
+      capacity: 1
       replicas_per_primary: 1
     - __name: 'Medium and Highly Available'
-      capacity: 26 GB
+      capacity: 3
       replicas_per_primary: 2
     - __name: 'Large and Highly Available'
-      capacity: 120 GB
+      capacity: 5
       replicas_per_primary: 3
   required:
     - capacity
@@ -26,22 +26,27 @@ params:
   properties:
     redis_version:
       type: string
-      title: Redis version
+      title: Version
       description: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. It will update these versions regularly as newer Redis software is released.
       default: "6"
       enum:
         - "4"
         - "6"
     capacity:
-      type: string
+      type: integer
       title: Cache size
-      description: The size of the Redis memory cache in GB.
-      enum:
-        - 6 GB
-        - 13 GB
-        - 26 GB
-        - 53 GB
-        - 120 GB
+      description: The size of the Redis memory cache.
+      oneOf:
+        - title: 6GB
+          const: 1
+        - title: 13GB
+          const: 2
+        - title: 26GB
+          const: 3
+        - title: 53GB
+          const: 4
+        - title: 120GB
+          const: 5
     replicas_per_primary:
       type: integer
       title: Replicas
