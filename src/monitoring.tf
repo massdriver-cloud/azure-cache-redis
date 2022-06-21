@@ -20,7 +20,7 @@ module "alarm_channel" {
 }
 
 module "cpu_metric_alert" {
-  source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=aa08797"
+  source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=8997456"
   scopes                  = [azurerm_redis_cache.main.id]
   resource_group_name     = azurerm_resource_group.main.name
   monitor_action_group_id = module.alarm_channel.id
@@ -32,8 +32,9 @@ module "cpu_metric_alert" {
     azurerm_redis_cache.main
   ]
 
-  md_metadata = var.md_metadata
-  message     = "High CPU Usage"
+  md_metadata  = var.md_metadata
+  display_name = "CPU Usage"
+  message      = "High CPU Usage"
 
   alarm_name       = "${var.md_metadata.name_prefix}-highProcessorTime"
   operator         = local.metric_config.operator
@@ -50,7 +51,7 @@ module "cpu_metric_alert" {
 }
 
 module "memory_metric_alert" {
-  source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=aa08797"
+  source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=8997456"
   scopes                  = [azurerm_redis_cache.main.id]
   resource_group_name     = azurerm_resource_group.main.name
   monitor_action_group_id = module.alarm_channel.id
@@ -62,8 +63,9 @@ module "memory_metric_alert" {
     azurerm_redis_cache.main
   ]
 
-  md_metadata = var.md_metadata
-  message     = "High Memory Usage"
+  md_metadata  = var.md_metadata
+  display_name = "Memory Usage"
+  message      = "High Memory Usage"
 
   alarm_name       = "${var.md_metadata.name_prefix}-highMemoryUsage"
   operator         = local.metric_config.operator
@@ -80,7 +82,7 @@ module "memory_metric_alert" {
 }
 
 module "server_load_metric_alert" {
-  source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=aa08797"
+  source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=8997456"
   scopes                  = [azurerm_redis_cache.main.id]
   resource_group_name     = azurerm_resource_group.main.name
   monitor_action_group_id = module.alarm_channel.id
@@ -92,8 +94,9 @@ module "server_load_metric_alert" {
     azurerm_redis_cache.main
   ]
 
-  md_metadata = var.md_metadata
-  message     = "High Server Load Usage"
+  md_metadata  = var.md_metadata
+  display_name = "Server Load"
+  message      = "High Server Load Usage"
 
   alarm_name       = "${var.md_metadata.name_prefix}-highServerLoadUsage"
   operator         = local.metric_config.operator
