@@ -11,15 +11,12 @@ steps:
 
 params:
   examples:
-    - __name: 'Small and Highly Available'
+    - __name: Development
       capacity: 1
       replicas_per_primary: 1
-    - __name: 'Medium and Highly Available'
+    - __name: Production
       capacity: 3
       replicas_per_primary: 2
-    - __name: 'Large and Highly Available'
-      capacity: 5
-      replicas_per_primary: 3
   required:
     - capacity
     - replicas_per_primary
