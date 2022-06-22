@@ -11,7 +11,6 @@ locals {
 resource "massdriver_artifact" "authentication" {
   field                = "authentication"
   provider_resource_id = azurerm_redis_cache.main.id
-  type                 = "redis-authentication"
   name                 = "Redis Cache ${var.md_metadata.name_prefix} (${azurerm_redis_cache.main.id})"
   artifact = jsonencode(
     {
