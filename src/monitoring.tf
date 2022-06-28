@@ -14,13 +14,13 @@ locals {
 }
 
 module "alarm_channel" {
-  source              = "github.com/massdriver-cloud/terraform-modules//azure-alarm-channel?ref=aa08797"
+  source              = "github.com/massdriver-cloud/terraform-modules//azure-alarm-channel?ref=40d6e54"
   md_metadata         = var.md_metadata
   resource_group_name = azurerm_resource_group.main.name
 }
 
 module "cpu_metric_alert" {
-  source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=8997456"
+  source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=40d6e54"
   scopes                  = [azurerm_redis_cache.main.id]
   resource_group_name     = azurerm_resource_group.main.name
   monitor_action_group_id = module.alarm_channel.id
@@ -51,7 +51,7 @@ module "cpu_metric_alert" {
 }
 
 module "memory_metric_alert" {
-  source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=8997456"
+  source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=40d6e54"
   scopes                  = [azurerm_redis_cache.main.id]
   resource_group_name     = azurerm_resource_group.main.name
   monitor_action_group_id = module.alarm_channel.id
@@ -82,7 +82,7 @@ module "memory_metric_alert" {
 }
 
 module "server_load_metric_alert" {
-  source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=8997456"
+  source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=40d6e54"
   scopes                  = [azurerm_redis_cache.main.id]
   resource_group_name     = azurerm_resource_group.main.name
   monitor_action_group_id = module.alarm_channel.id
