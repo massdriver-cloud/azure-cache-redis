@@ -24,7 +24,7 @@ params:
     redis_version:
       type: string
       title: Version
-      description: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. It will update these versions regularly as newer Redis software is released.
+      description: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. This version can be upgraded, but not downgraded.
       default: "6"
       enum:
         - "4"
@@ -56,6 +56,7 @@ params:
       type: boolean
       title: Redis clustering
       description: Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. Once enabled, clustering cannot be disabled again.
+      $md.immutable: true
       default: false
     shard_count:
       type: integer
