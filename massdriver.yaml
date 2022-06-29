@@ -62,7 +62,7 @@ params:
     shard_count:
       type: integer
       title: Redis cluster shard count
-      description: Set the number of shards in the Redis cluster. You must Enable Redis clustering and deploy that change before you can use this feature.
+      description: Set the number of shards in the Redis cluster. You must enable Redis clustering and deploy that change before you can use this feature.
       default: 1
       enum:
         - 1
