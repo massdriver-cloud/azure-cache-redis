@@ -47,7 +47,8 @@ params:
     replicas_per_primary:
       type: integer
       title: Replicas
-      description: Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically.
+      description: Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. This setting cannot be changed.
+      $md.immutable: true
       enum:
         - 1
         - 2
