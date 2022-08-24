@@ -47,8 +47,36 @@ Form input parameters for configuring a bundle for deployment.
 <summary>View</summary>
 
 <!-- PARAMS:START -->
+## Properties
 
-**Params coming soon**
+- **`capacity`** *(integer)*: The size of the Redis memory cache.
+  - **One of**
+    - 6GB
+    - 13GB
+    - 26GB
+    - 53GB
+    - 120GB
+- **`enable_cluster`** *(boolean)*: Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. Once enabled, clustering cannot be disabled again. Default: `False`.
+- **`redis_version`** *(string)*: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. This version can be upgraded, but not downgraded. Must be one of: `['4', '6']`. Default: `6`.
+- **`replicas_per_primary`** *(integer)*: Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. This setting cannot be changed. Must be one of: `[1, 2, 3]`.
+- **`shard_count`** *(integer)*: Set the number of shards in the Redis cluster. You must enable Redis clustering and deploy that change before you can use this feature. Must be one of: `[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]`. Default: `1`.
+## Examples
+
+  ```json
+  {
+      "__name": "Development",
+      "capacity": 1,
+      "replicas_per_primary": 1
+  }
+  ```
+
+  ```json
+  {
+      "__name": "Production",
+      "capacity": 3,
+      "replicas_per_primary": 2
+  }
+  ```
 
 <!-- PARAMS:END -->
 
@@ -62,9 +90,69 @@ Connections from other bundles that this bundle depends on.
 <summary>View</summary>
 
 <!-- CONNECTIONS:START -->
+## Properties
 
-**Connections coming soon**
+- **`azure_service_principal`** *(object)*: . Cannot contain additional properties.
+  - **`data`** *(object)*
+    - **`client_id`** *(string)*: A valid UUID field.
 
+      Examples:
+      ```json
+      "123xyz99-ab34-56cd-e7f8-456abc1q2w3e"
+      ```
+
+    - **`client_secret`** *(string)*
+    - **`subscription_id`** *(string)*: A valid UUID field.
+
+      Examples:
+      ```json
+      "123xyz99-ab34-56cd-e7f8-456abc1q2w3e"
+      ```
+
+    - **`tenant_id`** *(string)*: A valid UUID field.
+
+      Examples:
+      ```json
+      "123xyz99-ab34-56cd-e7f8-456abc1q2w3e"
+      ```
+
+  - **`specs`** *(object)*
+- **`vnet`** *(object)*: . Cannot contain additional properties.
+  - **`data`** *(object)*
+    - **`infrastructure`** *(object)*
+      - **`cidr`** *(string)*
+
+        Examples:
+        ```json
+        "10.100.0.0/16"
+        ```
+
+        ```json
+        "192.24.12.0/22"
+        ```
+
+      - **`default_subnet_id`** *(string)*: Azure Resource ID.
+
+        Examples:
+        ```json
+        "/subscriptions/12345678-1234-1234-abcd-1234567890ab/resourceGroups/resource-group-name/providers/Microsoft.Network/virtualNetworks/network-name"
+        ```
+
+      - **`id`** *(string)*: Azure Resource ID.
+
+        Examples:
+        ```json
+        "/subscriptions/12345678-1234-1234-abcd-1234567890ab/resourceGroups/resource-group-name/providers/Microsoft.Network/virtualNetworks/network-name"
+        ```
+
+  - **`specs`** *(object)*
+    - **`azure`** *(object)*: .
+      - **`region`** *(string)*: Select the Azure region you'd like to provision your resources in.
+        - **One of**
+          - East US
+          - North Central US
+          - South Central US
+          - West US
 <!-- CONNECTIONS:END -->
 
 </details>
@@ -77,8 +165,154 @@ Resources created by this bundle that can be connected to other bundles.
 <summary>View</summary>
 
 <!-- ARTIFACTS:START -->
+## Properties
 
-**Artifacts coming soon**
+- **`authentication`** *(object)*: Redis cluster authentication and cloud-specific configuration. Cannot contain additional properties.
+  - **`data`** *(object)*
+    - **`authentication`** *(object)*
+      - **`hostname`** *(string)*
+      - **`password`** *(string)*
+      - **`port`** *(integer)*: Port number. Minimum: `0`. Maximum: `65535`.
+      - **`username`** *(string)*
+    - **`infrastructure`** *(object)*: Cloud specific Redis configuration data.
+      - **One of**
+        - AWS Infrastructure ARN*object*: Minimal AWS Infrastructure Config. Cannot contain additional properties.
+          - **`arn`** *(string)*: Amazon Resource Name.
+
+            Examples:
+            ```json
+            "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+            ```
+
+            ```json
+            "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+            ```
+
+        - GCP Infrastructure GRN*object*: Minimal GCP Infrastructure Config. Cannot contain additional properties.
+          - **`grn`** *(string)*: GCP Resource Name (GRN).
+
+            Examples:
+            ```json
+            "projects/my-project/global/networks/my-global-network"
+            ```
+
+            ```json
+            "projects/my-project/regions/us-west2/subnetworks/my-subnetwork"
+            ```
+
+            ```json
+            "projects/my-project/topics/my-pubsub-topic"
+            ```
+
+            ```json
+            "projects/my-project/subscriptions/my-pubsub-subscription"
+            ```
+
+            ```json
+            "projects/my-project/locations/us-west2/instances/my-redis-instance"
+            ```
+
+            ```json
+            "projects/my-project/locations/us-west2/clusters/my-gke-cluster"
+            ```
+
+        - Azure Redis Cache infrastructure config*object*: . Cannot contain additional properties.
+          - **`ari`** *(string)*: Azure Resource ID.
+
+            Examples:
+            ```json
+            "/subscriptions/12345678-1234-1234-abcd-1234567890ab/resourceGroups/resource-group-name/providers/Microsoft.Network/virtualNetworks/network-name"
+            ```
+
+    - **`security`** *(object)*: TBD.
+      - **Any of**
+        - AWS Security information*object*: Informs downstream services of network and/or IAM policies. Cannot contain additional properties.
+          - **`iam`** *(object)*: IAM Policies. Cannot contain additional properties.
+            - **`^[a-z-/]+$`** *(object)*
+              - **`policy_arn`** *(string)*: AWS IAM policy ARN.
+
+                Examples:
+                ```json
+                "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+                ```
+
+                ```json
+                "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+                ```
+
+          - **`network`** *(object)*: AWS security group rules to inform downstream services of ports to open for communication. Cannot contain additional properties.
+            - **`^[a-z-]+$`** *(object)*
+              - **`arn`** *(string)*: Amazon Resource Name.
+
+                Examples:
+                ```json
+                "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+                ```
+
+                ```json
+                "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+                ```
+
+              - **`port`** *(integer)*: Port number. Minimum: `0`. Maximum: `65535`.
+              - **`protocol`** *(string)*: Must be one of: `['tcp', 'udp']`.
+        - Security*object*: GCP Security Configuration. Cannot contain additional properties.
+          - **`iam`** *(object)*: IAM Roles And Conditions. Cannot contain additional properties.
+            - **`^[a-z-/]+$`** *(object)*
+              - **`condition`** *(string)*: GCP IAM Condition.
+              - **`role`**: GCP Role.
+
+                Examples:
+                ```json
+                "roles/owner"
+                ```
+
+                ```json
+                "roles/redis.editor"
+                ```
+
+                ```json
+                "roles/storage.objectCreator"
+                ```
+
+                ```json
+                "roles/storage.legacyObjectReader"
+                ```
+
+        - Security*object*: Azure Security Configuration. Cannot contain additional properties.
+          - **`iam`** *(object)*: IAM Roles And Scopes. Cannot contain additional properties.
+            - **`^[a-z/-]+$`** *(object)*
+              - **`role`**: Azure Role.
+
+                Examples:
+                ```json
+                "Storage Blob Data Reader"
+                ```
+
+              - **`scope`** *(string)*: Azure IAM Scope.
+  - **`specs`** *(object)*
+    - **`cache`** *(object)*: The root schema comprises the entire JSON document.
+      - **`engine`** *(string)*: The cache engine. Default: ``.
+
+        Examples:
+        ```json
+        "redis"
+        ```
+
+      - **`version`** *(string)*: The version of the engine. Default: ``.
+
+        Examples:
+        ```json
+        "6.2"
+        ```
+
+
+      Examples:
+      ```json
+      {
+          "engine": "redis",
+          "version": "6.2"
+      }
+      ```
 
 <!-- ARTIFACTS:END -->
 
