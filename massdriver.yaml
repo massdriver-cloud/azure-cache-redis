@@ -70,7 +70,7 @@ params:
           oneOf:
             - properties:
                 enable_cluster:
-                  enum: 
+                  enum:
                     - true
                 shard_count:
                   type: integer
