@@ -8,69 +8,86 @@ type: bundle
 params:
   examples:
     - __name: Development
-      capacity: 1
-      replicas_per_primary: 1
+      redis:
+        capacity: 1
+        replicas_per_primary: 1
     - __name: Production
-      capacity: 3
-      replicas_per_primary: 2
-  required:
-    - capacity
-    - replicas_per_primary
+      redis:
+        capacity: 3
+        replicas_per_primary: 2
   properties:
-    redis_version:
-      type: string
-      title: Version
-      description: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. This version can be upgraded, but not downgraded.
-      default: "6"
-      enum:
-        - "4"
-        - "6"
-    capacity:
-      type: integer
-      title: Cache size
-      description: The size of the Redis memory cache.
-      oneOf:
-        - title: 6GB
-          const: 1
-        - title: 13GB
-          const: 2
-        - title: 26GB
-          const: 3
-        - title: 53GB
-          const: 4
-        - title: 120GB
-          const: 5
-    replicas_per_primary:
-      type: integer
-      title: Replicas
-      description: Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. This setting cannot be changed.
-      $md.immutable: true
-      enum:
-        - 1
-        - 2
-        - 3
-    enable_cluster:
-      type: boolean
-      title: Redis clustering
-      description: Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. Once enabled, clustering cannot be disabled again.
-      $md.immutable: true
-      default: false
-    shard_count:
-      type: integer
-      title: Redis cluster shard count
-      description: Set the number of shards in the Redis cluster. You must enable Redis clustering and deploy that change before you can use this feature.
-      default: 1
-      enum:
-        - 1
-        - 2
-        - 3
-        - 4
-        - 5
-        - 6
-        - 7
-        - 8
-        - 9
-        - 10
+    redis:
+      title: Redis
+      type: object
+      required:
+        - capacity
+        - replicas_per_primary
+      properties:
+        redis_version:
+          type: string
+          title: Version
+          description: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. This version can be upgraded, but not downgraded.
+          default: "6"
+          enum:
+            - "4"
+            - "6"
+        capacity:
+          type: integer
+          title: Cache size
+          description: The size of the Redis memory cache.
+          oneOf:
+            - title: 6GB
+              const: 1
+            - title: 13GB
+              const: 2
+            - title: 26GB
+              const: 3
+            - title: 53GB
+              const: 4
+            - title: 120GB
+              const: 5
+        replicas_per_primary:
+          type: integer
+          title: Replicas
+          description: Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. This setting cannot be changed.
+          $md.immutable: true
+          enum:
+            - 1
+            - 2
+            - 3
+    cluster:
+      title: Cluster
+      type: object
+      properties:
+        enable_cluster:
+          type: boolean
+          title: Redis clustering
+          description: Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. Once enabled, clustering cannot be disabled again.
+          $md.immutable: true
+          default: false
+      dependencies:
+        enable_cluster:
+          oneOf:
+            - properties:
+                enable_cluster:
+                  enum: 
+                    - true
+                shard_count:
+                  type: integer
+                  title: Redis cluster shard count
+                  description: Set the number of shards in the Redis cluster. You must enable Redis clustering and deploy that change before you can use this feature.
+                  default: 1
+                  enum:
+                    - 1
+                    - 2
+                    - 3
+                    - 4
+                    - 5
+                    - 6
+                    - 7
+                    - 8
+                    - 9
+                    - 10
 
 connections:
   required:
@@ -91,9 +108,17 @@ artifacts:
 
 ui:
   ui:order:
-    - redis_version
-    - capacity
-    - replicas_per_primary
-    - enable_cluster
-    - shard_count
-    - '*'
+    - redis
+    - cluster
+    - "*"
+  redis:
+    ui:order:
+      - redis_version
+      - capacity
+      - replicas_per_primary
+      - "*"
+  cluster:
+    ui:order:
+      - enable_cluster
+      - shard_count
+      - '*'
