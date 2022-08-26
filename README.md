@@ -49,9 +49,9 @@ Form input parameters for configuring a bundle for deployment.
 <!-- PARAMS:START -->
 ## Properties
 
-- **`cluster`** *(object)*: Cannot contain additional properties.
+- **`cluster`** *(object)*
   - **`enable_cluster`** *(boolean)*: Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. Once enabled, clustering cannot be disabled again. Default: `False`.
-- **`redis`** *(object)*: Cannot contain additional properties.
+- **`redis`** *(object)*
   - **`capacity`** *(integer)*: The size of the Redis memory cache.
     - **One of**
       - 6GB
@@ -98,7 +98,7 @@ Connections from other bundles that this bundle depends on.
 ## Properties
 
 - **`azure_service_principal`** *(object)*: . Cannot contain additional properties.
-  - **`data`** *(object)*: Cannot contain additional properties.
+  - **`data`** *(object)*
     - **`client_id`** *(string)*: A valid UUID field.
 
       Examples:
@@ -121,10 +121,10 @@ Connections from other bundles that this bundle depends on.
       "123xyz99-ab34-56cd-e7f8-456abc1q2w3e"
       ```
 
-  - **`specs`** *(object)*: Cannot contain additional properties.
+  - **`specs`** *(object)*
 - **`vnet`** *(object)*: . Cannot contain additional properties.
-  - **`data`** *(object)*: Cannot contain additional properties.
-    - **`infrastructure`** *(object)*: Cannot contain additional properties.
+  - **`data`** *(object)*
+    - **`infrastructure`** *(object)*
       - **`cidr`** *(string)*
 
         Examples:
@@ -150,8 +150,8 @@ Connections from other bundles that this bundle depends on.
         "/subscriptions/12345678-1234-1234-abcd-1234567890ab/resourceGroups/resource-group-name/providers/Microsoft.Network/virtualNetworks/network-name"
         ```
 
-  - **`specs`** *(object)*: Cannot contain additional properties.
-    - **`azure`** *(object)*: . Cannot contain additional properties.
+  - **`specs`** *(object)*
+    - **`azure`** *(object)*: .
       - **`region`** *(string)*: Select the Azure region you'd like to provision your resources in.
         - **One of**
           - East US
@@ -173,13 +173,13 @@ Resources created by this bundle that can be connected to other bundles.
 ## Properties
 
 - **`authentication`** *(object)*: Redis cluster authentication and cloud-specific configuration. Cannot contain additional properties.
-  - **`data`** *(object)*: Cannot contain additional properties.
-    - **`authentication`** *(object)*: Cannot contain additional properties.
+  - **`data`** *(object)*
+    - **`authentication`** *(object)*
       - **`hostname`** *(string)*
       - **`password`** *(string)*
       - **`port`** *(integer)*: Port number. Minimum: `0`. Maximum: `65535`.
       - **`username`** *(string)*
-    - **`infrastructure`** *(object)*: Cloud specific Redis configuration data. Can contain additional properties.
+    - **`infrastructure`** *(object)*: Cloud specific Redis configuration data.
       - **One of**
         - AWS Infrastructure ARN*object*: Minimal AWS Infrastructure Config. Cannot contain additional properties.
           - **`arn`** *(string)*: Amazon Resource Name.
@@ -229,7 +229,7 @@ Resources created by this bundle that can be connected to other bundles.
             "/subscriptions/12345678-1234-1234-abcd-1234567890ab/resourceGroups/resource-group-name/providers/Microsoft.Network/virtualNetworks/network-name"
             ```
 
-    - **`security`** *(object)*: TBD. Can contain additional properties.
+    - **`security`** *(object)*: TBD.
       - **Any of**
         - AWS Security information*object*: Informs downstream services of network and/or IAM policies. Cannot contain additional properties.
           - **`iam`** *(object)*: IAM Policies. Cannot contain additional properties.
@@ -294,8 +294,8 @@ Resources created by this bundle that can be connected to other bundles.
                 ```
 
               - **`scope`** *(string)*: Azure IAM Scope.
-  - **`specs`** *(object)*: Cannot contain additional properties.
-    - **`cache`** *(object)*: The root schema comprises the entire JSON document. Cannot contain additional properties.
+  - **`specs`** *(object)*
+    - **`cache`** *(object)*: The root schema comprises the entire JSON document.
       - **`engine`** *(string)*: The cache engine. Default: ``.
 
         Examples:
