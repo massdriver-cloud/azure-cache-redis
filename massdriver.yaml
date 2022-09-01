@@ -61,6 +61,8 @@ params:
     cluster:
       title: Cluster
       type: object
+      required:
+        - enable_cluster
       properties:
         enable_cluster:
           type: boolean
