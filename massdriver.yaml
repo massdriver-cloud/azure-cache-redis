@@ -90,6 +90,10 @@ params:
                     - 8
                     - 9
                     - 10
+            - properties:
+                enable_cluster:
+                  enum:
+                    - false
 
 connections:
   required:
