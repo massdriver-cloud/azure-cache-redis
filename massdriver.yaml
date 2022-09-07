@@ -72,27 +72,33 @@ params:
           default: false
       dependencies:
         enable_cluster:
-          required:
-            - shard_count
-          properties:
-            enable_cluster:
-              enum:
-                - true
-            shard_count:
-              type: integer
-              title: Redis cluster shard count
-              description: Set the number of shards in the Redis cluster.
-              enum:
-                - 1
-                - 2
-                - 3
-                - 4
-                - 5
-                - 6
-                - 7
-                - 8
-                - 9
-                - 10
+          oneOf:
+            - properties:
+                enable_cluster:
+                  enum:
+                    - true
+                shard_count:
+                  type: integer
+                  title: Redis cluster shard count
+                  description: Set the number of shards in the Redis cluster. You must enable Redis clustering and deploy that change before you can use this feature.
+                  enum:
+                    - 1
+                    - 2
+                    - 3
+                    - 4
+                    - 5
+                    - 6
+                    - 7
+                    - 8
+                    - 9
+                    - 10
+              required:
+                - shard_count
+            - properties:
+                enable_cluster:
+                  enum:
+                    - false
+
 
 connections:
   required:
