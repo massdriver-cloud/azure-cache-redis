@@ -17,6 +17,10 @@ resource "azurerm_redis_cache" "main" {
   sku_name             = "Premium"
   subnet_id            = var.vnet.data.infrastructure.default_subnet_id
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   public_network_access_enabled = false
 
   shard_count = var.cluster.enable_cluster ? var.cluster.shard_count : 0
