@@ -1,7 +1,7 @@
 schema: draft-07
 name: azure-cache-redis
 description: 'Azure Redis Cache is low-latency, scalable, secure, and highly available in-memory Redis data store available for Azure.'
-ref: github.com/massdriver-cloud/azure-cache-redis
+source_url: github.com/massdriver-cloud/azure-cache-redis
 access: private
 type: bundle
 
