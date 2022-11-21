@@ -58,6 +58,12 @@ Form input parameters for configuring a bundle for deployment.
 
 - **`cluster`** *(object)*
   - **`enable_cluster`** *(boolean)*: Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. Once enabled, clustering cannot be disabled again. Default: `False`.
+- **`monitoring`** *(object)*
+  - **`mode`** *(string)*: Enable and customize Function App metric alarms. Default: `AUTOMATED`.
+    - **One of**
+      - Automated
+      - Custom
+      - Disabled
 - **`redis`** *(object)*
   - **`capacity`** *(integer)*: The size of the Redis memory cache.
     - **One of**
