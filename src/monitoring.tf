@@ -30,7 +30,8 @@ locals {
     "DISABLED"  = {}
     "CUSTOM"    = lookup(var.monitoring, "alarms", {})
   }
-  alarms = lookup(local.alarms_map, var.monitoring.mode, {})
+  alarms             = lookup(local.alarms_map, var.monitoring.mode, {})
+  monitoring_enabled = var.monitoring.mode != "DISABLED" ? 1 : 0
 }
 
 module "alarm_channel" {
@@ -40,6 +41,7 @@ module "alarm_channel" {
 }
 
 module "cpu_metric_alert" {
+  count                   = local.monitoring_enabled
   source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=40d6e54"
   scopes                  = [azurerm_redis_cache.main.id]
   resource_group_name     = azurerm_resource_group.main.name
@@ -71,6 +73,7 @@ module "cpu_metric_alert" {
 }
 
 module "memory_metric_alert" {
+  count                   = local.monitoring_enabled
   source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=40d6e54"
   scopes                  = [azurerm_redis_cache.main.id]
   resource_group_name     = azurerm_resource_group.main.name
@@ -101,6 +104,7 @@ module "memory_metric_alert" {
 }
 
 module "server_load_metric_alert" {
+  count                   = local.monitoring_enabled
   source                  = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=40d6e54"
   scopes                  = [azurerm_redis_cache.main.id]
   resource_group_name     = azurerm_resource_group.main.name
