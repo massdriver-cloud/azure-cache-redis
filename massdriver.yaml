@@ -2,8 +2,8 @@ schema: draft-07
 name: azure-cache-redis
 description: 'Azure Redis Cache is low-latency, scalable, secure, and highly available in-memory Redis data store available for Azure.'
 source_url: github.com/massdriver-cloud/azure-cache-redis
-access: private
-type: bundle
+access: public
+type: infrastructure
 
 MonitorAlarmMetric: &monitor_alarm_metric
   required:
@@ -124,8 +124,10 @@ params:
       title: Redis
       type: object
       required:
+        - redis_version
         - capacity
         - replicas_per_primary
+        - persistence
       properties:
         redis_version:
           type: string
@@ -159,6 +161,57 @@ params:
             - 1
             - 2
             - 3
+        persistence:
+          type: string
+          title: Data persistence
+          description: Redis persistence allows you to persist data stored in Redis. You can also take snapshots and back up the data. To change from one persistence type to another, you must set to Disabled, deploy, and then select the persistence setting you want, and redeploy.
+          default: Disabled
+          enum:
+            - Disabled
+            - AOF
+            - RDB
+      dependencies:
+        persistence:
+          oneOf:
+            - properties:
+                persistence:
+                  enum:
+                    - Disabled
+            - properties:
+                persistence:
+                  enum:
+                    - AOF
+                aof_persistence:
+                  title: Enable second storage account
+                  description: Use a second storage account for AOF persistence when you believe you have higher than expected set operations on the cache. Setting up the secondary storage account helps ensure your cache doesn't reach storage bandwidth limits.
+                  type: boolean
+                  default: false
+              required:
+                - aof_persistence
+            - properties:
+                persistence:
+                  enum:
+                    - RDB
+                rdb_persistence:
+                  title: Backup frequency
+                  description: Select how frequent to take snapshots of your cache and store them in a storage account.
+                  type: integer
+                  default: 15
+                  oneOf:
+                    - title: Every 15 minutes
+                      const: 15
+                    - title: Every 30 minutes
+                      const: 30
+                    - title: Every 1 hour
+                      const: 60
+                    - title: Every 6 hours
+                      const: 360
+                    - title: Every 12 hours
+                      const: 720
+                    - title: Every 24 hours
+                      const: 1440
+              required:
+                - rdb_persistence
     cluster:
       title: Cluster
       type: object
@@ -272,6 +325,7 @@ ui:
       - redis_version
       - capacity
       - replicas_per_primary
+      - persistence
       - "*"
   cluster:
     ui:order:
