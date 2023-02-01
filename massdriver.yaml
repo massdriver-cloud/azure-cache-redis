@@ -132,7 +132,7 @@ params:
         redis_version:
           type: string
           title: Version
-          description: "Azure Cache for Redis offers the latest major version of Redis and at least one previous version. **This version can be upgraded, but not downgraded**."
+          description: "Azure Cache for Redis offers the latest major version of Redis and at least one previous version. **The version can be upgraded, but not downgraded**."
           default: "6"
           enum:
             - "4"
