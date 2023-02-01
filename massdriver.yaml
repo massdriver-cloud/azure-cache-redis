@@ -196,7 +196,7 @@ params:
                           enum:
                             - AOF
                         aof_persistence:
-                          title: Enable second storage account.
+                          title: Enable second storage account
                           type: boolean
                           default: false
                       required:
