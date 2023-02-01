@@ -132,7 +132,7 @@ params:
         redis_version:
           type: string
           title: Version
-          description: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. This version can be upgraded, but not downgraded.
+          description: "Azure Cache for Redis offers the latest major version of Redis and at least one previous version. **This version can be upgraded, but not downgraded**."
           default: "6"
           enum:
             - "4"
@@ -155,7 +155,7 @@ params:
         replicas_per_primary:
           type: integer
           title: Replicas
-          description: Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. This setting cannot be changed.
+          description: "Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. **This cannot be disabled after deployment**."
           $md.immutable: true
           enum:
             - 1
@@ -164,7 +164,7 @@ params:
         persistence:
           type: boolean
           title: Data persistence
-          description: Redis persistence allows you to persist data stored in Redis. You can also take snapshots and back up the data. This cannot be disabled after deployment.
+          description: "Redis persistence allows you to persist data stored in Redis. You can also take snapshots and back up the data. **This cannot be disabled after deployment**"
           default: false
           $md.immutable: true
       dependencies:
@@ -179,25 +179,46 @@ params:
                   enum:
                     - true
                 persistence_type:
-                  title: Backup frequency
-                  description: Select how frequent to take snapshots of your cache and store them in a storage account.
-                  type: integer
-                  default: 15
-                  oneOf:
-                    - title: Every 15 minutes
-                      const: 15
-                    - title: Every 30 minutes
-                      const: 30
-                    - title: Every 1 hour
-                      const: 60
-                    - title: Every 6 hours
-                      const: 360
-                    - title: Every 12 hours
-                      const: 720
-                    - title: Every 24 hours
-                      const: 1440
+                  title: Persistence type
+                  description: "Select the type of persistence you want to use. **This cannot be disabled after deployment**."
+                  type: string
+                  $md.immutable: true
+                  enum:
+                    - AOF
+                    - RDB
               required:
                 - persistence_type
+              dependencies:
+                persistence_type:
+                  oneOf:
+                    - properties:
+                        persistence_type:
+                          enum:
+                            - AOF
+                    - properties:
+                        persistence_type:
+                          enum:
+                            - RDB
+                        rdb_persistence:
+                          title: Backup frequency
+                          description: Select how frequent to take snapshots of your cache and store them in a storage account.
+                          type: integer
+                          default: 15
+                          oneOf:
+                            - title: Every 15 minutes
+                              const: 15
+                            - title: Every 30 minutes
+                              const: 30
+                            - title: Every 1 hour
+                              const: 60
+                            - title: Every 6 hours
+                              const: 360
+                            - title: Every 12 hours
+                              const: 720
+                            - title: Every 24 hours
+                              const: 1440
+                      required:
+                        - rdb_persistence
     cluster:
       title: Cluster
       type: object
@@ -207,7 +228,7 @@ params:
         enable_cluster:
           type: boolean
           title: Redis clustering
-          description: Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. Once enabled, clustering cannot be disabled again.
+          description: "Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. **This cannot be disabled after deployment**."
           $md.immutable: true
           default: false
       dependencies:
