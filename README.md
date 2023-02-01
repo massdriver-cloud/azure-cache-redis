@@ -72,7 +72,7 @@ Form input parameters for configuring a bundle for deployment.
       - 26GB
       - 53GB
       - 120GB
-  - **`persistence`** *(string)*: Redis persistence allows you to persist data stored in Redis. You can also take snapshots and back up the data. To change from one persistence type to another, you must set to Disabled, deploy, and then select the persistence setting you want, and redeploy. Must be one of: `['Disabled', 'AOF', 'RDB']`. Default: `Disabled`.
+  - **`persistence`** *(boolean)*: Redis persistence allows you to persist data stored in Redis. You can also take snapshots and back up the data. This cannot be disabled after deployment. Default: `False`.
   - **`redis_version`** *(string)*: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. This version can be upgraded, but not downgraded. Must be one of: `['4', '6']`. Default: `6`.
   - **`replicas_per_primary`** *(integer)*: Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. This setting cannot be changed. Must be one of: `[1, 2, 3]`.
 ## Examples

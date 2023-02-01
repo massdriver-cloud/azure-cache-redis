@@ -53,6 +53,7 @@ Massdriver provides you with visibility into the health of your systems. By defa
 
 ## Trade-offs
 Because of the need for private VNet integration, we use only the Redis premium SKU. We also do not support standard or enterprise Redis SKUs.
-We also do not support the following:
+We also do not currently support the following:
+* Two storage accounts for AOF data persistence
 * Public network access
 * Geo-replication is not supported due to the need for data persistence support
