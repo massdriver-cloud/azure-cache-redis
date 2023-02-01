@@ -155,7 +155,7 @@ params:
         replicas_per_primary:
           type: integer
           title: Replicas
-          description: Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. This setting cannot be changed.
+          description: "Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. **This cannot be disabled after deployment**."
           $md.immutable: true
           enum:
             - 1
@@ -164,7 +164,7 @@ params:
         persistence:
           type: boolean
           title: Data persistence
-          description: Redis persistence allows you to persist data stored in Redis. You can also take snapshots and back up the data. This cannot be disabled after deployment.
+          description: "Redis persistence allows you to persist data stored in Redis. You can also take snapshots and back up the data. **This cannot be disabled after deployment**."
           default: false
           $md.immutable: true
       dependencies:
@@ -207,7 +207,7 @@ params:
         enable_cluster:
           type: boolean
           title: Redis clustering
-          description: Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. Once enabled, clustering cannot be disabled again.
+          description: "Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. **This cannot be disabled after deployment**."
           $md.immutable: true
           default: false
       dependencies:
