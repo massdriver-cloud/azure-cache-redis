@@ -4,13 +4,12 @@ locals {
 }
 
 resource "azurerm_storage_account" "rdb" {
-  count               = var.redis.persistence ? 1 : 0
-  name                = "${local.alphanumeric_name}rdb"
-  resource_group_name = azurerm_resource_group.main.name
-  location            = azurerm_resource_group.main.location
-  account_kind        = "StorageV2"
-  account_tier        = "Premium"
-  # Come back to this to determine best way to handle this.
+  count                         = var.redis.persistence ? 1 : 0
+  name                          = "${local.alphanumeric_name}rdb"
+  resource_group_name           = azurerm_resource_group.main.name
+  location                      = azurerm_resource_group.main.location
+  account_kind                  = "StorageV2"
+  account_tier                  = "Premium"
   account_replication_type      = "LRS"
   enable_https_traffic_only     = true
   min_tls_version               = "TLS1_2"
@@ -23,6 +22,9 @@ resource "azurerm_storage_account" "rdb" {
 
   network_rules {
     default_action             = "Deny"
+    # Enabling RBAC for redis -> storage account adds the redis to the "Azure Trusted Services" list
+    # which allows the redis cache to bypass the network ACLs:
+    # https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security?tabs=azure-portal#grant-access-to-trusted-azure-services
     bypass                     = ["AzureServices", "Logging", "Metrics"]
     virtual_network_subnet_ids = [var.azure_virtual_network.data.infrastructure.default_subnet_id]
   }
