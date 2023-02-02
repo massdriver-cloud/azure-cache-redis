@@ -1,10 +1,14 @@
 locals {
   max_length        = 21
   alphanumeric_name = substr(replace(var.md_metadata.name_prefix, "/[^a-z0-9]/", ""), 0, local.max_length)
+
+  enable_rdb      = var.redis.persistence == "RDB"
+  enable_aof      = var.redis.persistence == "AOF"
+  enable_dual_aof = var.redis.persistence == "AOF_DUAL"
 }
 
 resource "azurerm_storage_account" "rdb" {
-  count                     = var.redis.persistence == "RDB" ? 1 : 0
+  count                     = local.enable_rdb ? 1 : 0
   name                      = "${local.alphanumeric_name}rdb"
   resource_group_name       = azurerm_resource_group.main.name
   location                  = azurerm_resource_group.main.location
@@ -30,14 +34,14 @@ resource "azurerm_storage_account" "rdb" {
 }
 
 resource "azurerm_role_assignment" "rdb" {
-  count                = var.redis.persistence == "RDB" ? 1 : 0
+  count                = local.enable_rdb ? 1 : 0
   scope                = azurerm_storage_account.rdb[0].id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = azurerm_redis_cache.main.identity.0.principal_id
 }
 
 resource "azurerm_storage_account" "aof0" {
-  count                     = var.redis.persistence == "AOF" || var.redis.persistence == "AOF_DUAL" ? 1 : 0
+  count                     = local.enable_aof || local.enable_dual_aof ? 1 : 0
   name                      = "${local.alphanumeric_name}aof0"
   resource_group_name       = azurerm_resource_group.main.name
   location                  = azurerm_resource_group.main.location
@@ -60,14 +64,14 @@ resource "azurerm_storage_account" "aof0" {
 }
 
 resource "azurerm_role_assignment" "aof0" {
-  count                = var.redis.persistence == "AOF" || var.redis.persistence == "AOF_DUAL" ? 1 : 0
+  count                = local.enable_aof || local.enable_dual_aof ? 1 : 0
   scope                = azurerm_storage_account.aof0[0].id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = azurerm_redis_cache.main.identity.0.principal_id
 }
 
 resource "azurerm_storage_account" "aof1" {
-  count                     = var.redis.persistence == "AOF_DUAL" ? 1 : 0
+  count                     = local.enable_dual_aof ? 1 : 0
   name                      = "${local.alphanumeric_name}aof1"
   resource_group_name       = azurerm_resource_group.main.name
   location                  = azurerm_resource_group.main.location
@@ -90,7 +94,7 @@ resource "azurerm_storage_account" "aof1" {
 }
 
 resource "azurerm_role_assignment" "aof1" {
-  count                = var.redis.persistence == "AOF_DUAL" ? 1 : 0
+  count                = local.enable_dual_aof ? 1 : 0
   scope                = azurerm_storage_account.aof1[0].id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = azurerm_redis_cache.main.identity.0.principal_id

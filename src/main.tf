@@ -20,7 +20,7 @@ resource "azurerm_redis_cache" "main" {
   tags                          = var.md_metadata.default_tags
 
   dynamic "redis_configuration" {
-    for_each = var.redis.persistence == "RDB" ? [1] : []
+    for_each = local.enable_rdb ? [1] : []
     content {
       rdb_backup_enabled            = true
       rdb_backup_max_snapshot_count = 1
@@ -34,7 +34,7 @@ resource "azurerm_redis_cache" "main" {
   # https://github.com/hashicorp/terraform-provider-azurerm/issues/20223
 
   dynamic "redis_configuration" {
-    for_each = var.redis.persistence == "AOF" ? [1] : []
+    for_each = local.enable_aof ? [1] : []
     content {
       aof_backup_enabled              = true
       aof_storage_connection_string_0 = azurerm_storage_account.aof0[0].primary_connection_string
@@ -42,7 +42,7 @@ resource "azurerm_redis_cache" "main" {
   }
 
   dynamic "redis_configuration" {
-    for_each = var.redis.persistence == "AOF_DUAL" ? [1] : []
+    for_each = local.enable_dual_aof ? [1] : []
     content {
       aof_backup_enabled              = true
       aof_storage_connection_string_0 = azurerm_storage_account.aof0[0].primary_connection_string
