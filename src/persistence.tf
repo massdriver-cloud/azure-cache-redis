@@ -23,6 +23,9 @@ resource "azurerm_storage_account" "rdb" {
 
   network_rules {
     default_action             = "Deny"
+    # Enabling RBAC for redis -> storage account adds the redis to the "Azure Trusted Services" list
+    # which allows the redis cache to bypass the network ACLs:
+    # https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security?tabs=azure-portal#grant-access-to-trusted-azure-services
     bypass                     = ["AzureServices", "Logging", "Metrics"]
     virtual_network_subnet_ids = [var.azure_virtual_network.data.infrastructure.default_subnet_id]
   }
