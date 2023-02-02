@@ -35,6 +35,10 @@ The bundle includes a number of best practices without needing any additional wo
 **Which persistence model should I choose?**
 * AOF: Append-only file persistence saves every write to a log, which has significant effect on throughput. Choose AOF persistence if your primary goal is to minimize data loss, and you can handle a lower throughput on your cache.
 * RDB: Redis database persistence saves backups based on the configured backup interval with minimal effect on performance. Choose RDB persistence if you wish to maintain optimal throughput on your cache, but still want a mechanism for data recovery.
+
+**Should I use a second storage account with AOF?**
+Use a second storage account for AOF persistence when you believe you've higher than expected set operations on the cache. Setting up the secondary storage account helps ensure your cache doesn't reach storage bandwidth limits.
+
 ### Private VNet integration
 As noted above, it uses the premium tier to enable private VNet integration.
 ### High availability
@@ -54,6 +58,7 @@ Massdriver provides you with visibility into the health of your systems. By defa
 ## Trade-offs
 Because of the need for private VNet integration, we use only the Redis premium SKU. We also do not support standard or enterprise Redis SKUs.
 We also do not currently support the following:
-* Two storage accounts for AOF data persistence
+* Switching between different modes of data persistence
+* Disabling data persistence without destroying the cache
 * Public network access
 * Geo-replication is not supported due to the need for data persistence support
