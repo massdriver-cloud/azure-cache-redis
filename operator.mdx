@@ -1,7 +1,7 @@
 # azure-cache-redis
 Azure Cache for Redis leverages Redis—a multipurpose open-source, in-memory data store—to improve performance scaling for applications with large numbers of concurrent users. As a result, it can dramatically increase throughput and lower latency by using server memory to cache frequently used data. This service is fully managed so that you can focus on development.
 
-## Use Cases 
+## Use Cases
 Azure Cache for Redis is a versatile solution that can address a number of common application architectures.
 ### Improved application performance
 Caching improves application performance by buffering frequently used data in memory. Querying a relational database can slow down your application, but by buffering the most common queries, Azure Cache for Redis can improve latency and reduce the provisioning requirements for your database.
@@ -10,13 +10,13 @@ Storing too much session data in a cookie can impede performance, so cookies for
 ### Communicate between services
 Azure Cache for Redis can also route messages between services in real time and provide a distributed queue for applications.
 
-## Configuration Presets 
+## Configuration Presets
 ### Development
 The development preset sets capacity to 6 GB to handle small workloads and sets replicas per primary to 1 for high availability. Use this preset for development only.
 ### Production
 The production preset sets capacity to 26 GB to handle moderate workloads and sets replicas per primary to 2 for high availability. This preset has sufficient performance for production environments.
 
-## Design 
+## Design
 Our bundle includes the following design choices to help simplify your deployment:
 ### High availability
 The premium tier of Azure Cache for Redis ensures high availability by provisioning two server nodes, a primary and a replica which is continually updated as a backup. In this way, your application instance can remain available even when the primary node goes down, regardless of whether the outage is planned. If the primary node goes offline for any reason, the replica automatically takes over as the new primary.
@@ -29,6 +29,16 @@ Azure Cache for Redis improves application resiliency through automatic failover
 
 ## Best Practices
 The bundle includes a number of best practices without needing any additional work on your part.
+### Data persistence
+[Redis data persistence](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-how-to-premium-persistence) allows you to persist data stored in Redis in the event of a failure. You can also take snapshots and back up the data. If there's a hardware failure, you load the data.
+
+**Which persistence model should I choose?**
+* AOF: Append-only file persistence saves every write to a log, which has significant effect on throughput. Choose AOF persistence if your primary goal is to minimize data loss, and you can handle a lower throughput on your cache.
+* RDB: Redis database persistence saves backups based on the configured backup interval with minimal effect on performance. Choose RDB persistence if you wish to maintain optimal throughput on your cache, but still want a mechanism for data recovery.
+
+**Should I use a second storage account with AOF?**
+Use a second storage account for AOF persistence when you believe you've higher than expected set operations on the cache. Setting up the secondary storage account helps ensure your cache doesn't reach storage bandwidth limits.
+
 ### Private VNet integration
 As noted above, it uses the premium tier to enable private VNet integration.
 ### High availability
@@ -36,18 +46,18 @@ Every cluster comes with at least one read replica across availability zones in 
 ### Automatic patching
 We handle patching automatically to keep you up to date.
 
-## Security 
+## Security
 ### No public network access
 In order to improve security, we disable public network access.
 ### Authenticated clients
 Also, by default, you can access clusters only via authenticated clients.
 
-## Observability 
+## Observability
 Massdriver provides you with visibility into the health of your systems. By default, Redis cache instances will be created with alarms connected to Massdriver to alert you when performance drops below a key threshold or fails completely. You will be notified when the memory, CPU, or server load exceeds 90%.
 
-## Trade-offs 
+## Trade-offs
 Because of the need for private VNet integration, we use only the Redis premium SKU. We also do not support standard or enterprise Redis SKUs.
-We also do not support the following:
-* System-assigned managed identities
-* Data persistence
-* Public network access
+We also do not currently support the following:
+* Switching between different modes of data persistence
+* Disabling data persistence without destroying the cache
+* Geo-replication (due to the need for data persistence support)

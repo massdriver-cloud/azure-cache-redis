@@ -57,7 +57,7 @@ Form input parameters for configuring a bundle for deployment.
 ## Properties
 
 - **`cluster`** *(object)*
-  - **`enable_cluster`** *(boolean)*: Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. Once enabled, clustering cannot be disabled again. Default: `False`.
+  - **`enable_cluster`** *(boolean)*: Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. **This cannot be disabled after deployment**. Default: `False`.
 - **`monitoring`** *(object)*
   - **`mode`** *(string)*: Enable and customize Function App metric alarms. Default: `AUTOMATED`.
     - **One of**
@@ -72,8 +72,14 @@ Form input parameters for configuring a bundle for deployment.
       - 26GB
       - 53GB
       - 120GB
-  - **`redis_version`** *(string)*: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. This version can be upgraded, but not downgraded. Must be one of: `['4', '6']`. Default: `6`.
-  - **`replicas_per_primary`** *(integer)*: Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. This setting cannot be changed. Must be one of: `[1, 2, 3]`.
+  - **`persistence`** *(string)*: Redis persistence allows you to persist data stored in Redis in the event of an outage. **This cannot be changed after deployment**. Default: `Disabled`.
+    - **One of**
+      - Disabled
+      - AOF (single storage account)
+      - AOF (dual storage accounts)
+      - RDB
+  - **`redis_version`** *(string)*: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. **The version can be upgraded, but not downgraded**. Must be one of: `['4', '6']`. Default: `6`.
+  - **`replicas_per_primary`** *(integer)*: Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. **This cannot be changed after deployment**. Must be one of: `[1, 2, 3]`.
 ## Examples
 
   ```json
@@ -166,11 +172,6 @@ Connections from other bundles that this bundle depends on.
   - **`specs`** *(object)*
     - **`azure`** *(object)*: .
       - **`region`** *(string)*: Select the Azure region you'd like to provision your resources in.
-        - **One of**
-          - East US
-          - North Central US
-          - South Central US
-          - West US
 <!-- CONNECTIONS:END -->
 
 </details>
@@ -258,6 +259,18 @@ Resources created by this bundle that can be connected to other bundles.
                 "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
                 ```
 
+          - **`identity`** *(object)*: For instances where IAM policies must be attached to a role attached to an AWS resource, for instance AWS Eventbridge to Firehose, this attribute should be used to allow the downstream to attach it's policies (Firehose) directly to the IAM role created by the upstream (Eventbridge). It is important to remember that connections in massdriver are one way, this scheme perserves the dependency relationship while allowing bundles to control the lifecycles of resources under it's management. Cannot contain additional properties.
+            - **`role_arn`** *(string)*: ARN for this resources IAM Role.
+
+              Examples:
+              ```json
+              "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+              ```
+
+              ```json
+              "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+              ```
+
           - **`network`** *(object)*: AWS security group rules to inform downstream services of ports to open for communication. Cannot contain additional properties.
             - **`^[a-z-]+$`** *(object)*
               - **`arn`** *(string)*: Amazon Resource Name.
@@ -298,7 +311,7 @@ Resources created by this bundle that can be connected to other bundles.
 
         - Security*object*: Azure Security Configuration. Cannot contain additional properties.
           - **`iam`** *(object)*: IAM Roles And Scopes. Cannot contain additional properties.
-            - **`^[a-z/-]+$`** *(object)*
+            - **`^[a-z]+[a-z_]*[a-z]$`** *(object)*
               - **`role`**: Azure Role.
 
                 Examples:

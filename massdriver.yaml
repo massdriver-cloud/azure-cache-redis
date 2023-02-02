@@ -2,8 +2,8 @@ schema: draft-07
 name: azure-cache-redis
 description: 'Azure Redis Cache is low-latency, scalable, secure, and highly available in-memory Redis data store available for Azure.'
 source_url: github.com/massdriver-cloud/azure-cache-redis
-access: private
-type: bundle
+access: public
+type: infrastructure
 
 MonitorAlarmMetric: &monitor_alarm_metric
   required:
@@ -124,13 +124,15 @@ params:
       title: Redis
       type: object
       required:
+        - redis_version
         - capacity
         - replicas_per_primary
+        - persistence
       properties:
         redis_version:
           type: string
           title: Version
-          description: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. This version can be upgraded, but not downgraded.
+          description: "Azure Cache for Redis offers the latest major version of Redis and at least one previous version. **The version can be upgraded, but not downgraded**."
           default: "6"
           enum:
             - "4"
@@ -153,12 +155,60 @@ params:
         replicas_per_primary:
           type: integer
           title: Replicas
-          description: Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. This setting cannot be changed.
+          description: "Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. **This cannot be changed after deployment**."
           $md.immutable: true
           enum:
             - 1
             - 2
             - 3
+        persistence:
+          type: string
+          title: Data persistence
+          description: "Redis persistence allows you to persist data stored in Redis in the event of an outage. **This cannot be changed after deployment**"
+          default: Disabled
+          $md.immutable: true
+          oneOf:
+            - title: Disabled
+              const: Disabled
+            - title: AOF (single storage account)
+              const: AOF
+            - title: AOF (dual storage accounts)
+              const: AOF_DUAL
+            - title: RDB
+              const: RDB
+      dependencies:
+        persistence:
+          oneOf:
+            - properties:
+                persistence:
+                  enum:
+                    - Disabled
+                    - AOF
+                    - AOF_DUAL
+            - properties:
+                persistence:
+                  enum:
+                    - RDB
+                rdb_persistence:
+                  title: Backup frequency
+                  description: Select how frequent to take snapshots of your cache and store them in a storage account.
+                  type: integer
+                  default: 15
+                  oneOf:
+                    - title: Every 15 minutes
+                      const: 15
+                    - title: Every 30 minutes
+                      const: 30
+                    - title: Every 1 hour
+                      const: 60
+                    - title: Every 6 hours
+                      const: 360
+                    - title: Every 12 hours
+                      const: 720
+                    - title: Every 24 hours
+                      const: 1440
+              required:
+                - rdb_persistence
     cluster:
       title: Cluster
       type: object
@@ -168,7 +218,7 @@ params:
         enable_cluster:
           type: boolean
           title: Redis clustering
-          description: Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. Once enabled, clustering cannot be disabled again.
+          description: "Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. **This cannot be disabled after deployment**."
           $md.immutable: true
           default: false
       dependencies:
@@ -272,6 +322,7 @@ ui:
       - redis_version
       - capacity
       - replicas_per_primary
+      - persistence
       - "*"
   cluster:
     ui:order:
