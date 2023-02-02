@@ -57,7 +57,7 @@ Form input parameters for configuring a bundle for deployment.
 ## Properties
 
 - **`cluster`** *(object)*
-  - **`enable_cluster`** *(boolean)*: Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. Once enabled, clustering cannot be disabled again. Default: `False`.
+  - **`enable_cluster`** *(boolean)*: Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. **This cannot be disabled after deployment**. Default: `False`.
 - **`monitoring`** *(object)*
   - **`mode`** *(string)*: Enable and customize Function App metric alarms. Default: `AUTOMATED`.
     - **One of**
@@ -72,9 +72,14 @@ Form input parameters for configuring a bundle for deployment.
       - 26GB
       - 53GB
       - 120GB
-  - **`persistence`** *(boolean)*: Redis persistence allows you to persist data stored in Redis. You can also take snapshots and back up the data. This cannot be disabled after deployment. Default: `False`.
-  - **`redis_version`** *(string)*: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. This version can be upgraded, but not downgraded. Must be one of: `['4', '6']`. Default: `6`.
-  - **`replicas_per_primary`** *(integer)*: Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. This setting cannot be changed. Must be one of: `[1, 2, 3]`.
+  - **`persistence`** *(string)*: Redis persistence allows you to persist data stored in Redis. You can also take snapshots and back up the data. **This cannot be changed after deployment**. Default: `Disabled`.
+    - **One of**
+      - Disabled
+      - AOF (single storage account)
+      - AOF (dual storage accounts)
+      - RDB
+  - **`redis_version`** *(string)*: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. **The version can be upgraded, but not downgraded**. Must be one of: `['4', '6']`. Default: `6`.
+  - **`replicas_per_primary`** *(integer)*: Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. **This cannot be changed after deployment**. Must be one of: `[1, 2, 3]`.
 ## Examples
 
   ```json

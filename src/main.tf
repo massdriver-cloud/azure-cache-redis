@@ -20,17 +20,33 @@ resource "azurerm_redis_cache" "main" {
   tags                          = var.md_metadata.default_tags
 
   dynamic "redis_configuration" {
-    for_each = var.redis.persistence ? [1] : []
+    for_each = var.redis.persistence == "RDB" ? [1] : []
     content {
-      rdb_backup_enabled = var.redis.persistence ? true : false
-      # Snapshot count seems to be a limitation, and can only be set to "1"
-      # https://github.com/hashicorp/terraform-provider-azurerm/issues/19469
-      rdb_backup_max_snapshot_count = var.redis.persistence ? 1 : null
-      rdb_backup_frequency          = var.redis.persistence ? var.redis.persistence_type : null
-      # Right now the connection string is required to be set, even if we're using RBAC.
-      # Submitted a GitHub issue in the provider for this:
-      # https://github.com/hashicorp/terraform-provider-azurerm/issues/20223
-      rdb_storage_connection_string = var.redis.persistence ? azurerm_storage_account.rdb[0].primary_connection_string : null
+      rdb_backup_enabled            = true
+      rdb_backup_max_snapshot_count = 1
+      rdb_backup_frequency          = var.redis.rdb_persistence
+      rdb_storage_connection_string = azurerm_storage_account.rdb[0].primary_connection_string
+    }
+  }
+
+  # Right now the connection string is required to be set, even if we're using RBAC.
+  # Submitted a GitHub issue in the provider for this:
+  # https://github.com/hashicorp/terraform-provider-azurerm/issues/20223
+
+  dynamic "redis_configuration" {
+    for_each = var.redis.persistence == "AOF" ? [1] : []
+    content {
+      aof_backup_enabled              = true
+      aof_storage_connection_string_0 = azurerm_storage_account.aof0[0].primary_connection_string
+    }
+  }
+
+  dynamic "redis_configuration" {
+    for_each = var.redis.persistence == "AOF_DUAL" ? [1] : []
+    content {
+      aof_backup_enabled              = true
+      aof_storage_connection_string_0 = azurerm_storage_account.aof0[0].primary_connection_string
+      aof_storage_connection_string_1 = azurerm_storage_account.aof1[0].primary_connection_string
     }
   }
 

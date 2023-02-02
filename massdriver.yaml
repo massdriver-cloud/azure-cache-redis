@@ -162,23 +162,34 @@ params:
             - 2
             - 3
         persistence:
-          type: boolean
+          type: string
           title: Data persistence
-          description: "Redis persistence allows you to persist data stored in Redis. You can also take snapshots and back up the data. **This cannot be disabled after deployment**."
-          default: false
+          description: "Redis persistence allows you to persist data stored in Redis. You can also take snapshots and back up the data. **This cannot be changed after deployment**"
+          default: Disabled
           $md.immutable: true
+          oneOf:
+            - title: Disabled
+              const: Disabled
+            - title: AOF (single storage account)
+              const: AOF
+            - title: AOF (dual storage accounts)
+              const: AOF_DUAL
+            - title: RDB
+              const: RDB
       dependencies:
         persistence:
           oneOf:
             - properties:
                 persistence:
                   enum:
-                    - false
+                    - Disabled
+                    - AOF
+                    - AOF_DUAL
             - properties:
                 persistence:
                   enum:
-                    - true
-                persistence_type:
+                    - RDB
+                rdb_persistence:
                   title: Backup frequency
                   description: Select how frequent to take snapshots of your cache and store them in a storage account.
                   type: integer
@@ -197,7 +208,7 @@ params:
                     - title: Every 24 hours
                       const: 1440
               required:
-                - persistence_type
+                - rdb_persistence
     cluster:
       title: Cluster
       type: object
