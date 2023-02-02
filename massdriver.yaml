@@ -164,7 +164,7 @@ params:
         persistence:
           type: string
           title: Data persistence
-          description: "Redis persistence allows you to persist data stored in Redis. You can also take snapshots and back up the data. **This cannot be changed after deployment**"
+          description: "Redis persistence allows you to persist data stored in Redis in the event of an outage. **This cannot be changed after deployment**"
           default: Disabled
           $md.immutable: true
           oneOf:

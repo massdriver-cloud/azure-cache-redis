@@ -72,7 +72,7 @@ Form input parameters for configuring a bundle for deployment.
       - 26GB
       - 53GB
       - 120GB
-  - **`persistence`** *(string)*: Redis persistence allows you to persist data stored in Redis. You can also take snapshots and back up the data. **This cannot be changed after deployment**. Default: `Disabled`.
+  - **`persistence`** *(string)*: Redis persistence allows you to persist data stored in Redis in the event of an outage. **This cannot be changed after deployment**. Default: `Disabled`.
     - **One of**
       - Disabled
       - AOF (single storage account)
