@@ -247,7 +247,7 @@ Resources created by this bundle that can be connected to other bundles.
       - **Any of**
         - AWS Security information*object*: Informs downstream services of network and/or IAM policies. Cannot contain additional properties.
           - **`iam`** *(object)*: IAM Policies. Cannot contain additional properties.
-            - **`^[a-z-/]+$`** *(object)*
+            - **`^[a-z]+[a-z_]*[a-z]+$`** *(object)*
               - **`policy_arn`** *(string)*: AWS IAM policy ARN.
 
                 Examples:
@@ -288,7 +288,7 @@ Resources created by this bundle that can be connected to other bundles.
               - **`protocol`** *(string)*: Must be one of: `['tcp', 'udp']`.
         - Security*object*: GCP Security Configuration. Cannot contain additional properties.
           - **`iam`** *(object)*: IAM Roles And Conditions. Cannot contain additional properties.
-            - **`^[a-z-/]+$`** *(object)*
+            - **`^[a-z]+[a-z_]*[a-z]$`** *(object)*
               - **`condition`** *(string)*: GCP IAM Condition.
               - **`role`**: GCP Role.
 
