@@ -3,7 +3,7 @@ locals {
     username = ""
     password = azurerm_redis_cache.main.primary_access_key
     hostname = azurerm_redis_cache.main.hostname
-    port     = azurerm_redis_cache.main.port
+    port     = azurerm_redis_cache.main.ssl_port
   }
   data_security = {}
 }

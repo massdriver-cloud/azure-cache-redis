@@ -47,6 +47,15 @@ Every cluster comes with at least one read replica across availability zones in 
 We handle patching automatically to keep you up to date.
 
 ## Security
+### TLS encryption
+We enable TLS encryption by default using version 1.2. Make sure your client supports TLS.
+* [Redis-CLI](https://redis.io/docs/ui/cli/#ssltls)
+* [Golang](https://redis.uptrace.dev/guide/go-redis.html#using-tls)
+* [Python](https://redis-py.readthedocs.io/en/stable/examples/ssl_connection_examples.html)
+* [Ruby](https://github.com/redis/redis-rb#ssltls-support)
+* [Node.JS](https://github.com/redis/node-redis/blob/master/docs/client-configuration.md#tls)
+### Non-SSL port disabled
+We disable the non-SSL port (6379) by default. The SSL port (6380) is open.
 ### No public network access
 In order to improve security, we disable public network access.
 ### Authenticated clients
