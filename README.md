@@ -72,6 +72,7 @@ Form input parameters for configuring a bundle for deployment.
       - 26GB
       - 53GB
       - 120GB
+  - **`non_ssl_port`** *(boolean)*: Enable the non-SSL (6379) port. SSL port (6380) is enabled by default. **Enabling this is not recommended as it is less secure**. Default: `False`.
   - **`persistence`** *(string)*: Redis persistence allows you to persist data stored in Redis in the event of an outage. **This cannot be changed after deployment**. Default: `Disabled`.
     - **One of**
       - Disabled

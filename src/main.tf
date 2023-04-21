@@ -16,6 +16,7 @@ resource "azurerm_redis_cache" "main" {
   minimum_tls_version           = "1.2"
   subnet_id                     = var.azure_virtual_network.data.infrastructure.default_subnet_id
   public_network_access_enabled = false
+  enable_non_ssl_port           = var.redis.non_ssl_port
   shard_count                   = var.cluster.enable_cluster ? var.cluster.shard_count : 0
   tags                          = var.md_metadata.default_tags
 
