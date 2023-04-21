@@ -55,7 +55,7 @@ We enable TLS encryption by default using version 1.2. Make sure your client sup
 * [Ruby](https://github.com/redis/redis-rb#ssltls-support)
 * [Node.JS](https://github.com/redis/node-redis/blob/master/docs/client-configuration.md#tls)
 ### Non-SSL port disabled
-We disable the non-SSL port (6379) by default. The SSL port (6380) is open.
+The non-SSL port (6379) is disabled by default, which requires all connections to be on the SSL port (6380). Users can optionally enable the non-SSL port, but this is **not** recommend it as it will allow unencrypted communication with the Redis server, which poses a security risk.
 ### No public network access
 In order to improve security, we disable public network access.
 ### Authenticated clients
