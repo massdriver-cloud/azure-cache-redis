@@ -17,7 +17,7 @@ Azure Redis Cache is low-latency, scalable, secure, and highly available in-memo
 
 ## Design
 
-For detailed information, check out our [Operator Guide](operator.mdx) for this bundle.
+For detailed information, check out our [Operator Guide](operator.md) for this bundle.
 
 ## Usage
 
@@ -37,54 +37,8 @@ Form input parameters for configuring a bundle for deployment.
 <summary>View</summary>
 
 <!-- PARAMS:START -->
-## Properties
 
-- **`cluster`** *(object)*
-  - **`enable_cluster`** *(boolean)*: Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. **This cannot be disabled after deployment**. Default: `False`.
-- **`monitoring`** *(object)*
-  - **`mode`** *(string)*: Enable and customize Function App metric alarms. Default: `AUTOMATED`.
-    - **One of**
-      - Automated
-      - Custom
-      - Disabled
-- **`redis`** *(object)*
-  - **`capacity`** *(integer)*: The size of the Redis memory cache.
-    - **One of**
-      - 6GB
-      - 13GB
-      - 26GB
-      - 53GB
-      - 120GB
-  - **`non_ssl_port`** *(boolean)*: Enable the non-SSL (6379) port. SSL port (6380) is enabled by default. **Enabling this is not recommended as it will allow unencrypted communication, which poses a security risk**. Default: `False`.
-  - **`persistence`** *(string)*: Redis persistence allows you to persist data stored in Redis in the event of an outage. **This cannot be changed after deployment**. Default: `Disabled`.
-    - **One of**
-      - Disabled
-      - AOF (single storage account)
-      - AOF (dual storage accounts)
-      - RDB
-  - **`redis_version`** *(string)*: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. **The version can be upgraded, but not downgraded**. Must be one of: `['4', '6']`. Default: `6`.
-  - **`replicas_per_primary`** *(integer)*: Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. **This cannot be changed after deployment**. Must be one of: `[1, 2, 3]`.
-## Examples
-
-  ```json
-  {
-      "__name": "Development",
-      "redis": {
-          "capacity": 1,
-          "replicas_per_primary": 1
-      }
-  }
-  ```
-
-  ```json
-  {
-      "__name": "Production",
-      "redis": {
-          "capacity": 3,
-          "replicas_per_primary": 2
-      }
-  }
-  ```
+**Params coming soon**
 
 <!-- PARAMS:END -->
 
@@ -98,64 +52,9 @@ Connections from other bundles that this bundle depends on.
 <summary>View</summary>
 
 <!-- CONNECTIONS:START -->
-## Properties
 
-- **`azure_service_principal`** *(object)*: . Cannot contain additional properties.
-  - **`data`** *(object)*
-    - **`client_id`** *(string)*: A valid UUID field.
+**Connections coming soon**
 
-      Examples:
-      ```json
-      "123xyz99-ab34-56cd-e7f8-456abc1q2w3e"
-      ```
-
-    - **`client_secret`** *(string)*
-    - **`subscription_id`** *(string)*: A valid UUID field.
-
-      Examples:
-      ```json
-      "123xyz99-ab34-56cd-e7f8-456abc1q2w3e"
-      ```
-
-    - **`tenant_id`** *(string)*: A valid UUID field.
-
-      Examples:
-      ```json
-      "123xyz99-ab34-56cd-e7f8-456abc1q2w3e"
-      ```
-
-  - **`specs`** *(object)*
-- **`azure_virtual_network`** *(object)*: . Cannot contain additional properties.
-  - **`data`** *(object)*
-    - **`infrastructure`** *(object)*
-      - **`cidr`** *(string)*
-
-        Examples:
-        ```json
-        "10.100.0.0/16"
-        ```
-
-        ```json
-        "192.24.12.0/22"
-        ```
-
-      - **`default_subnet_id`** *(string)*: Azure Resource ID.
-
-        Examples:
-        ```json
-        "/subscriptions/12345678-1234-1234-abcd-1234567890ab/resourceGroups/resource-group-name/providers/Microsoft.Network/virtualNetworks/network-name"
-        ```
-
-      - **`id`** *(string)*: Azure Resource ID.
-
-        Examples:
-        ```json
-        "/subscriptions/12345678-1234-1234-abcd-1234567890ab/resourceGroups/resource-group-name/providers/Microsoft.Network/virtualNetworks/network-name"
-        ```
-
-  - **`specs`** *(object)*
-    - **`azure`** *(object)*: .
-      - **`region`** *(string)*: Select the Azure region you'd like to provision your resources in.
 <!-- CONNECTIONS:END -->
 
 </details>
@@ -168,209 +67,8 @@ Resources created by this bundle that can be connected to other bundles.
 <summary>View</summary>
 
 <!-- ARTIFACTS:START -->
-## Properties
 
-- **`authentication`** *(object)*: Redis cluster authentication and cloud-specific configuration. Cannot contain additional properties.
-  - **`data`** *(object)*
-    - **`authentication`** *(object)*
-      - **`hostname`** *(string)*
-      - **`password`** *(string)*
-      - **`port`** *(integer)*: Port number. Minimum: `0`. Maximum: `65535`.
-      - **`username`** *(string)*
-    - **`infrastructure`** *(object)*: Cloud specific Redis configuration data.
-      - **One of**
-        - AWS Infrastructure ARN*object*: Minimal AWS Infrastructure Config. Cannot contain additional properties.
-          - **`arn`** *(string)*: Amazon Resource Name.
-
-            Examples:
-            ```json
-            "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
-            ```
-
-            ```json
-            "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
-            ```
-
-        - GCP Infrastructure GRN*object*: Minimal GCP Infrastructure Config. Cannot contain additional properties.
-          - **`grn`** *(string)*: GCP Resource Name (GRN).
-
-            Examples:
-            ```json
-            "projects/my-project/global/networks/my-global-network"
-            ```
-
-            ```json
-            "projects/my-project/regions/us-west2/subnetworks/my-subnetwork"
-            ```
-
-            ```json
-            "projects/my-project/topics/my-pubsub-topic"
-            ```
-
-            ```json
-            "projects/my-project/subscriptions/my-pubsub-subscription"
-            ```
-
-            ```json
-            "projects/my-project/locations/us-west2/instances/my-redis-instance"
-            ```
-
-            ```json
-            "projects/my-project/locations/us-west2/clusters/my-gke-cluster"
-            ```
-
-        - Azure Redis Cache infrastructure config*object*: . Cannot contain additional properties.
-          - **`ari`** *(string)*: Azure Resource ID.
-
-            Examples:
-            ```json
-            "/subscriptions/12345678-1234-1234-abcd-1234567890ab/resourceGroups/resource-group-name/providers/Microsoft.Network/virtualNetworks/network-name"
-            ```
-
-    - **`security`** *(object)*: TBD.
-      - **Any of**
-        - AWS Security information*object*: Informs downstream services of network and/or IAM policies. Cannot contain additional properties.
-          - **`iam`** *(object)*: IAM Policies. Cannot contain additional properties.
-            - **`^[a-z]+[a-z_]*[a-z]+$`** *(object)*
-              - **`policy_arn`** *(string)*: AWS IAM policy ARN.
-
-                Examples:
-                ```json
-                "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
-                ```
-
-                ```json
-                "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
-                ```
-
-          - **`identity`** *(object)*: For instances where IAM policies must be attached to a role attached to an AWS resource, for instance AWS Eventbridge to Firehose, this attribute should be used to allow the downstream to attach it's policies (Firehose) directly to the IAM role created by the upstream (Eventbridge). It is important to remember that connections in massdriver are one way, this scheme perserves the dependency relationship while allowing bundles to control the lifecycles of resources under it's management. Cannot contain additional properties.
-            - **`role_arn`** *(string)*: ARN for this resources IAM Role.
-
-              Examples:
-              ```json
-              "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
-              ```
-
-              ```json
-              "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
-              ```
-
-          - **`network`** *(object)*: AWS security group rules to inform downstream services of ports to open for communication. Cannot contain additional properties.
-            - **`^[a-z-]+$`** *(object)*
-              - **`arn`** *(string)*: Amazon Resource Name.
-
-                Examples:
-                ```json
-                "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
-                ```
-
-                ```json
-                "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
-                ```
-
-              - **`port`** *(integer)*: Port number. Minimum: `0`. Maximum: `65535`.
-              - **`protocol`** *(string)*: Must be one of: `['tcp', 'udp']`.
-        - Security*object*: GCP Security Configuration. Cannot contain additional properties.
-          - **`iam`** *(object)*: IAM Roles And Conditions. Cannot contain additional properties.
-            - **`^[a-z]+[a-z_]*[a-z]$`** *(object)*
-              - **`condition`** *(string)*: GCP IAM Condition.
-              - **`role`**: GCP Role.
-
-                Examples:
-                ```json
-                "roles/owner"
-                ```
-
-                ```json
-                "roles/redis.editor"
-                ```
-
-                ```json
-                "roles/storage.objectCreator"
-                ```
-
-                ```json
-                "roles/storage.legacyObjectReader"
-                ```
-
-        - Security*object*: Azure Security Configuration. Cannot contain additional properties.
-          - **`iam`** *(object)*: IAM Roles And Scopes. Cannot contain additional properties.
-            - **`^[a-z]+[a-z_]*[a-z]$`** *(object)*
-              - **`role`**: Azure Role.
-
-                Examples:
-                ```json
-                "Storage Blob Data Reader"
-                ```
-
-              - **`scope`** *(string)*: Azure IAM Scope.
-  - **`specs`** *(object)*
-    - **`aws`** *(object)*: .
-      - **`region`** *(string)*: AWS Region to provision in.
-
-        Examples:
-        ```json
-        "us-west-2"
-        ```
-
-    - **`azure`** *(object)*: .
-      - **`region`** *(string)*: Select the Azure region you'd like to provision your resources in.
-    - **`cache`** *(object)*: The root schema comprises the entire JSON document.
-      - **`engine`** *(string)*: The cache engine. Default: ``.
-
-        Examples:
-        ```json
-        "redis"
-        ```
-
-      - **`version`** *(string)*: The version of the engine. Default: ``.
-
-        Examples:
-        ```json
-        "6.2"
-        ```
-
-
-      Examples:
-      ```json
-      {
-          "engine": "redis",
-          "version": "6.2"
-      }
-      ```
-
-    - **`gcp`** *(object)*: .
-      - **`project`** *(string)*
-      - **`region`** *(string)*: The GCP region to provision resources in.
-
-        Examples:
-        ```json
-        "us-east1"
-        ```
-
-        ```json
-        "us-east4"
-        ```
-
-        ```json
-        "us-west1"
-        ```
-
-        ```json
-        "us-west2"
-        ```
-
-        ```json
-        "us-west3"
-        ```
-
-        ```json
-        "us-west4"
-        ```
-
-        ```json
-        "us-central1"
-        ```
+**Artifacts coming soon**
 
 <!-- ARTIFACTS:END -->
 
