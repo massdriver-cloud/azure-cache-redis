@@ -1,102 +1,101 @@
 schema: draft-07
 name: azure-cache-redis
-description: 'Azure Redis Cache is low-latency, scalable, secure, and highly available in-memory Redis data store available for Azure.'
-source_url: github.com/massdriver-cloud/azure-cache-redis
-access: public
-type: infrastructure
-
-MonitorAlarmMetric: &monitor_alarm_metric
-  required:
-    - severity
-    - frequency
-    - window_size
-    - aggregation
-    - operator
-    - threshold
-  properties:
+version: 1.0.0
+description: Azure Redis Cache is low-latency, scalable, secure, and highly available in-memory Redis data store available for Azure.
+source_url: https://github.com/massdriver-cloud/azure-cache-redis
+type: application
+MonitorAlarmMetric:
+  required: &1
+  - severity
+  - frequency
+  - window_size
+  - aggregation
+  - operator
+  - threshold
+  properties: &2
     severity:
       title: Severity
       description: The severity of the alarm.
       type: integer
       default: 1
       oneOf:
-        - title: Critical
-          const: 0
-        - title: Error
-          const: 1
-        - title: Warning
-          const: 2
-        - title: Information
-          const: 3
-        - title: Verbose
-          const: 4
+      - title: Critical
+        const: 0
+      - title: Error
+        const: 1
+      - title: Warning
+        const: 2
+      - title: Information
+        const: 3
+      - title: Verbose
+        const: 4
     frequency:
       title: Frequency
       description: The evaluation frequency of the alarms.
       type: string
       default: PT1M
       oneOf:
-        - title: Every 1 minute
-          const: PT1M
-        - title: Every 5 minutes
-          const: PT5M
-        - title: Every 15 minutes
-          const: PT15M
-        - title: Every 30 minutes
-          const: PT30M
-        - title: Every 1 hour
-          const: PT1H
+      - title: Every 1 minute
+        const: PT1M
+      - title: Every 5 minutes
+        const: PT5M
+      - title: Every 15 minutes
+        const: PT15M
+      - title: Every 30 minutes
+        const: PT30M
+      - title: Every 1 hour
+        const: PT1H
     window_size:
       title: Alarm window
       description: The time range over which the alarm is evaluated.
       type: string
       default: PT5M
       oneOf:
-        - title: Every 1 minute
-          const: PT1M
-        - title: Every 5 minutes
-          const: PT5M
-        - title: Every 15 minutes
-          const: PT15M
-        - title: Every 30 minutes
-          const: PT30M
-        - title: Every 1 hour
-          const: PT1H
-        - title: Every 6 hours
-          const: PT6H
-        - title: Every 12 hours
-          const: PT12H
-        - title: Every 24 hours
-          const: P1D
+      - title: Every 1 minute
+        const: PT1M
+      - title: Every 5 minutes
+        const: PT5M
+      - title: Every 15 minutes
+        const: PT15M
+      - title: Every 30 minutes
+        const: PT30M
+      - title: Every 1 hour
+        const: PT1H
+      - title: Every 6 hours
+        const: PT6H
+      - title: Every 12 hours
+        const: PT12H
+      - title: Every 24 hours
+        const: P1D
     aggregation:
       title: Aggregation
       description: The aggregation type of the alarm.
       type: string
       default: Average
       enum:
-        - Average
-        - Count
-        - Minimum
-        - Maximum
-        - Total
+      - Average
+      - Count
+      - Minimum
+      - Maximum
+      - Total
     operator:
       title: Operator
       description: The operator used to compare the metric value to the threshold.
       type: string
       default: GreaterThanOrEqual
       oneOf:
-        - title: Greater than or equal to
-          const: GreaterThanOrEqual
-        - title: Greater than
-          const: GreaterThan
-        - title: Less than or equal to
-          const: LessThanOrEqual
-        - title: Less than
-          const: LessThan
-        - title: Equals
-          const: Equals
-        - title: Not equal to
-          const: NotEquals
+      - title: Greater than or equal to
+        const: GreaterThanOrEqual
+      - title: Greater than
+        const: GreaterThan
+      - title: Less than or equal to
+        const: LessThanOrEqual
+      - title: Less than
+        const: LessThan
+      - title: Equals
+        const: Equals
+      - title: Not equal to
+        const: NotEquals
     threshold:
       title: Threshold
       description: The percentage threshold for the metric to trigger an alarm.
@@ -104,79 +103,78 @@ MonitorAlarmMetric: &monitor_alarm_metric
       default: 90
       minimum: 0
       maximum: 100
-
 params:
   examples:
-    - __name: Development
-      redis:
-        capacity: 1
-        replicas_per_primary: 1
-    - __name: Production
-      redis:
-        capacity: 3
-        replicas_per_primary: 2
+  - __name: Development
+    redis:
+      capacity: 1
+      replicas_per_primary: 1
+  - __name: Production
+    redis:
+      capacity: 3
+      replicas_per_primary: 2
   required:
-    - redis
-    - cluster
-    - monitoring
+  - redis
+  - cluster
+  - monitoring
   properties:
     redis:
       title: Redis
       type: object
       required:
-        - redis_version
-        - capacity
-        - replicas_per_primary
-        - persistence
-        - non_ssl_port
+      - redis_version
+      - capacity
+      - replicas_per_primary
+      - persistence
+      - non_ssl_port
       properties:
         redis_version:
           type: string
           title: Version
-          description: "Azure Cache for Redis offers the latest major version of Redis and at least one previous version. **The version can be upgraded, but not downgraded**."
-          default: "6"
+          description: Azure Cache for Redis offers the latest major version of Redis and at least one previous version. **The version can be upgraded, but not downgraded**.
+          default: '6'
           enum:
-            - "4"
-            - "6"
+          - '4'
+          - '6'
         capacity:
           type: integer
           title: Cache size
           description: The size of the Redis memory cache.
           oneOf:
-            - title: 6GB
-              const: 1
-            - title: 13GB
-              const: 2
-            - title: 26GB
-              const: 3
-            - title: 53GB
-              const: 4
-            - title: 120GB
-              const: 5
+          - title: 6GB
+            const: 1
+          - title: 13GB
+            const: 2
+          - title: 26GB
+            const: 3
+          - title: 53GB
+            const: 4
+          - title: 120GB
+            const: 5
         replicas_per_primary:
           type: integer
           title: Replicas
-          description: "Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. **This cannot be changed after deployment**."
-          $md.immutable: true
+          description: Number of read replicas per primary node. When the primary VM becomes unavailable, the replica detects that and takes over as the new primary automatically. **This cannot be changed after deployment**.
+          "$md.immutable": true
           enum:
-            - 1
-            - 2
-            - 3
+          - 1
+          - 2
+          - 3
         persistence:
           type: string
           title: Data persistence
-          description: "Redis persistence allows you to persist data stored in Redis in the event of an outage. **This cannot be changed after deployment**"
+          description: Redis persistence allows you to persist data stored in Redis in the event of an outage. **This cannot be changed after deployment**
           default: Disabled
-          $md.immutable: true
+          "$md.immutable": true
           oneOf:
-            - title: Disabled
-              const: Disabled
-            - title: AOF (single storage account)
-              const: AOF
-            - title: AOF (dual storage accounts)
-              const: AOF_DUAL
-            - title: RDB
-              const: RDB
+          - title: Disabled
+            const: Disabled
+          - title: AOF (single storage account)
+            const: AOF
+          - title: AOF (dual storage accounts)
+            const: AOF_DUAL
+          - title: RDB
+            const: RDB
         non_ssl_port:
           type: boolean
           title: Enable Non-SSL port
@@ -185,76 +183,76 @@ params:
       dependencies:
         persistence:
           oneOf:
-            - properties:
-                persistence:
-                  enum:
-                    - Disabled
-                    - AOF
-                    - AOF_DUAL
-            - properties:
-                persistence:
-                  enum:
-                    - RDB
-                rdb_persistence:
-                  title: Backup frequency
-                  description: Select how frequent to take snapshots of your cache and store them in a storage account.
-                  type: integer
-                  default: 15
-                  oneOf:
-                    - title: Every 15 minutes
-                      const: 15
-                    - title: Every 30 minutes
-                      const: 30
-                    - title: Every 1 hour
-                      const: 60
-                    - title: Every 6 hours
-                      const: 360
-                    - title: Every 12 hours
-                      const: 720
-                    - title: Every 24 hours
-                      const: 1440
-              required:
-                - rdb_persistence
+          - properties:
+              persistence:
+                enum:
+                - Disabled
+                - AOF
+                - AOF_DUAL
+          - properties:
+              persistence:
+                enum:
+                - RDB
+              rdb_persistence:
+                title: Backup frequency
+                description: Select how frequent to take snapshots of your cache and store them in a storage account.
+                type: integer
+                default: 15
+                oneOf:
+                - title: Every 15 minutes
+                  const: 15
+                - title: Every 30 minutes
+                  const: 30
+                - title: Every 1 hour
+                  const: 60
+                - title: Every 6 hours
+                  const: 360
+                - title: Every 12 hours
+                  const: 720
+                - title: Every 24 hours
+                  const: 1440
+            required:
+            - rdb_persistence
     cluster:
       title: Cluster
       type: object
       required:
-        - enable_cluster
+      - enable_cluster
       properties:
         enable_cluster:
           type: boolean
           title: Redis clustering
-          description: "Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. **This cannot be disabled after deployment**."
-          $md.immutable: true
+          description: Redis cluster automatically shards data across multiple Redis nodes, so you can create workloads of bigger memory sizes and get better performance. **This cannot be disabled after deployment**.
+          "$md.immutable": true
           default: false
       dependencies:
         enable_cluster:
           oneOf:
-            - properties:
-                enable_cluster:
-                  enum:
-                    - true
-                shard_count:
-                  type: integer
-                  title: Redis cluster shard count
-                  description: Set the number of shards in the Redis cluster.
-                  enum:
-                    - 1
-                    - 2
-                    - 3
-                    - 4
-                    - 5
-                    - 6
-                    - 7
-                    - 8
-                    - 9
-                    - 10
-              required:
-                - shard_count
-            - properties:
-                enable_cluster:
-                  enum:
-                    - false
+          - properties:
+              enable_cluster:
+                enum:
+                - true
+              shard_count:
+                type: integer
+                title: Redis cluster shard count
+                description: Set the number of shards in the Redis cluster.
+                enum:
+                - 1
+                - 2
+                - 3
+                - 4
+                - 5
+                - 6
+                - 7
+                - 8
+                - 9
+                - 10
+            required:
+            - shard_count
+          - properties:
+              enable_cluster:
+                enum:
+                - false
     monitoring:
       type: object
       title: Monitoring
@@ -265,98 +263,104 @@ params:
           type: string
           default: AUTOMATED
           oneOf:
-            - const: AUTOMATED
-              title: Automated
-            - const: CUSTOM
-              title: Custom
-            - const: DISABLED
-              title: Disabled
+          - const: AUTOMATED
+            title: Automated
+          - const: CUSTOM
+            title: Custom
+          - const: DISABLED
+            title: Disabled
       dependencies:
         mode:
           oneOf:
-            - properties:
-                mode:
-                  const: AUTOMATED
-            - properties:
-                mode:
-                  const: DISABLED
-            - properties:
-                mode:
-                  const: CUSTOM
-                alarms:
-                  type: object
-                  title: Alarms
-                  properties:
-                    cpu_metric_alert:
-                      title: CPU
-                      type: object
-                      <<: *monitor_alarm_metric
-                    memory_metric_alert:
-                      title: Memory
-                      type: object
-                      <<: *monitor_alarm_metric
-                    server_load_metric_alert:
-                      title: Server Load
-                      type: object
-                      <<: *monitor_alarm_metric
-
+          - properties:
+              mode:
+                const: AUTOMATED
+          - properties:
+              mode:
+                const: DISABLED
+          - properties:
+              mode:
+                const: CUSTOM
+              alarms:
+                type: object
+                title: Alarms
+                properties:
+                  cpu_metric_alert:
+                    title: CPU
+                    type: object
+                    required: *1
+                    properties: *2
+                  memory_metric_alert:
+                    title: Memory
+                    type: object
+                    required: *1
+                    properties: *2
+                  server_load_metric_alert:
+                    title: Server Load
+                    type: object
+                    required: *1
+                    properties: *2
 connections:
   required:
-    - azure_service_principal
-    - azure_virtual_network
+  - azure_service_principal
+  - azure_virtual_network
   properties:
     azure_service_principal:
-      $ref: massdriver/azure-service-principal
+      "$ref": massdriver/azure-service-principal
     azure_virtual_network:
-      $ref: massdriver/azure-virtual-network
-
+      "$ref": massdriver/azure-virtual-network
 artifacts:
   required:
-    - authentication
+  - authentication
   properties:
     authentication:
-      $ref: massdriver/redis-authentication
-
+      "$ref": massdriver/redis-authentication
 ui:
   ui:order:
-    - redis
-    - cluster
-    - monitoring
-    - "*"
+  - redis
+  - cluster
+  - monitoring
+  - "*"
   redis:
     ui:order:
-      - redis_version
-      - capacity
-      - replicas_per_primary
-      - persistence
-      - non_ssl_port
-      - "*"
+    - redis_version
+    - capacity
+    - replicas_per_primary
+    - persistence
+    - non_ssl_port
+    - "*"
   cluster:
     ui:order:
-      - enable_cluster
-      - shard_count
-      - '*'
+    - enable_cluster
+    - shard_count
+    - "*"
   monitoring:
     ui:order:
-      - mode
-      - alarms
-      - '*'
+    - mode
+    - alarms
+    - "*"
     alarms:
       ui:order:
-        - cpu_metric_alert
-        - memory_metric_alert
-        - server_load_metric_alert
-        - '*'
-      cpu_metric_alert: &monitor_alarm_metric_ui
-        ui:order:
-          - severity
-          - operator
-          - aggregation
-          - frequency
-          - window_size
-          - threshold
-          - '*'
+      - cpu_metric_alert
+      - memory_metric_alert
+      - server_load_metric_alert
+      - "*"
+      cpu_metric_alert:
+        ui:order: &3
+        - severity
+        - operator
+        - aggregation
+        - frequency
+        - window_size
+        - threshold
+        - "*"
       memory_metric_alert:
-        << : *monitor_alarm_metric_ui
+        ui:order: *3
       server_load_metric_alert:
-        << : *monitor_alarm_metric_ui
+        ui:order: *3
+steps:
+- path: src
+  provisioner: opentofu
+  config:
+    checkov:
+      enable: true
