@@ -3,7 +3,6 @@ name: azure-cache-redis
 version: 1.0.0
 description: Azure Redis Cache is low-latency, scalable, secure, and highly available in-memory Redis data store available for Azure.
 source_url: https://github.com/massdriver-cloud/azure-cache-redis
-type: application
 MonitorAlarmMetric:
   required: &1
   - severity
