@@ -29,7 +29,7 @@ resource "azurerm_storage_account" "rdb" {
     # which allows the redis cache to bypass the network ACLs:
     # https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security?tabs=azure-portal#grant-access-to-trusted-azure-services
     bypass                     = ["AzureServices", "Logging", "Metrics"]
-    virtual_network_subnet_ids = [var.azure_virtual_network.data.infrastructure.default_subnet_id]
+    virtual_network_subnet_ids = [var.azure_virtual_network.infrastructure.default_subnet_id]
   }
 }
 
@@ -59,7 +59,7 @@ resource "azurerm_storage_account" "aof0" {
   network_rules {
     default_action             = "Deny"
     bypass                     = ["AzureServices", "Logging", "Metrics"]
-    virtual_network_subnet_ids = [var.azure_virtual_network.data.infrastructure.default_subnet_id]
+    virtual_network_subnet_ids = [var.azure_virtual_network.infrastructure.default_subnet_id]
   }
 }
 
@@ -89,7 +89,7 @@ resource "azurerm_storage_account" "aof1" {
   network_rules {
     default_action             = "Deny"
     bypass                     = ["AzureServices", "Logging", "Metrics"]
-    virtual_network_subnet_ids = [var.azure_virtual_network.data.infrastructure.default_subnet_id]
+    virtual_network_subnet_ids = [var.azure_virtual_network.infrastructure.default_subnet_id]
   }
 }
 
